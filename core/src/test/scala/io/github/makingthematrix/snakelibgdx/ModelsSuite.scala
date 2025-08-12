@@ -479,3 +479,113 @@ class ModelsSuite extends FunSuite:
     assertEquals(board.snake.hasCoin, false, "Snake should have hasCoin false after growth")
     assertEquals(board.snake.body.size, 4, "Snake should grow from second coin")
   }
+
+  // Empty tile positions tests
+  test("Board getEmptyTilePositions should return all positions when board is empty") {
+    val board = Board.apply(3) // 3x3 board with no coins and empty snake
+    val emptyPositions = board.getEmptyTilePositions
+
+    assertEquals(emptyPositions.size, 9, "Empty 3x3 board should have 9 empty positions")
+    assert(emptyPositions.contains((0, 0)), "Should contain (0,0)")
+    assert(emptyPositions.contains((2, 2)), "Should contain (2,2)")
+  }
+
+  test("Board getEmptyTilePositions should exclude snake body positions") {
+    val snake = Snake.apply(List((1, 0), (1, 1), (1, 2))).get
+    val board = Board.apply(3, Nil, snake)
+    val emptyPositions = board.getEmptyTilePositions
+
+    assertEquals(emptyPositions.size, 6, "3x3 board with 3-segment snake should have 6 empty positions")
+    assert(!emptyPositions.contains((1, 0)), "Should not contain snake head position")
+    assert(!emptyPositions.contains((1, 1)), "Should not contain snake body position")
+    assert(!emptyPositions.contains((1, 2)), "Should not contain snake tail position")
+    assert(emptyPositions.contains((0, 0)), "Should contain non-snake position")
+  }
+
+  test("Board getEmptyTilePositions should exclude coin positions") {
+    val coins = List((0, 0), (1, 1), (2, 2))
+    val board = Board.apply(3, coins)
+    val emptyPositions = board.getEmptyTilePositions
+
+    assertEquals(emptyPositions.size, 6, "3x3 board with 3 coins should have 6 empty positions")
+    assert(!emptyPositions.contains((0, 0)), "Should not contain coin position (0,0)")
+    assert(!emptyPositions.contains((1, 1)), "Should not contain coin position (1,1)")
+    assert(!emptyPositions.contains((2, 2)), "Should not contain coin position (2,2)")
+    assert(emptyPositions.contains((0, 1)), "Should contain non-coin position")
+  }
+
+  test("Board getEmptyTilePositions should exclude both snake and coin positions") {
+    val snake = Snake.apply(List((0, 0), (0, 1))).get
+    val coins = List((1, 0), (2, 2))
+    val board = Board.apply(3, coins, snake)
+    val emptyPositions = board.getEmptyTilePositions
+
+    assertEquals(emptyPositions.size, 5, "3x3 board with 2-segment snake and 2 coins should have 5 empty positions")
+    assert(!emptyPositions.contains((0, 0)), "Should not contain snake head position")
+    assert(!emptyPositions.contains((0, 1)), "Should not contain snake body position")
+    assert(!emptyPositions.contains((1, 0)), "Should not contain coin position")
+    assert(!emptyPositions.contains((2, 2)), "Should not contain coin position")
+    assert(emptyPositions.contains((1, 1)), "Should contain empty position")
+  }
+
+  test("Board getEmptyTilePositions should return empty list when board is full") {
+    // Create a board where snake and coins occupy all positions
+    val allPositions = for {
+      x <- 0 until 2
+      y <- 0 until 2
+    } yield (x, y)
+
+    val snake = Snake.apply(List((0, 0), (0, 1))).get
+    val coins = List((1, 0), (1, 1))
+    val board = Board.apply(2, coins, snake)
+    val emptyPositions = board.getEmptyTilePositions
+
+    assertEquals(emptyPositions.size, 0, "Fully occupied 2x2 board should have 0 empty positions")
+  }
+
+  // AddCoin method tests
+  test("Board addCoin should add coin to empty position") {
+    val board = Board.apply(3)
+    val originalCoinCount = board.coinsNumber
+
+    board.addCoin((1, 1))
+
+    assertEquals(board.coinsNumber, originalCoinCount + 1, "Coin count should increase by 1")
+    assert(board.coinsPositions.contains((1, 1)), "Board should contain the new coin")
+  }
+
+  test("Board addCoin should not add coin to position with existing coin") {
+    val board = Board.apply(3, List((1, 1)))
+    val originalCoinCount = board.coinsNumber
+
+    board.addCoin((1, 1)) // Try to add coin at same position
+
+    assertEquals(board.coinsNumber, originalCoinCount, "Coin count should not change")
+    assertEquals(board.coinsPositions.count(_ == (1, 1)), 1, "Should still have only one coin at position")
+  }
+
+  test("Board addCoin should not add coin to position with snake body") {
+    val snake = Snake.apply(List((1, 1), (1, 2))).get
+    val board = Board.apply(3, Nil, snake)
+    val originalCoinCount = board.coinsNumber
+
+    board.addCoin((1, 1)) // Try to add coin at snake head
+    board.addCoin((1, 2)) // Try to add coin at snake body
+
+    assertEquals(board.coinsNumber, originalCoinCount, "Coin count should not change")
+    assert(!board.coinsPositions.contains((1, 1)), "Should not contain coin at snake head")
+    assert(!board.coinsPositions.contains((1, 2)), "Should not contain coin at snake body")
+  }
+
+  test("Board addCoin should successfully add multiple coins to different positions") {
+    val board = Board.apply(3)
+
+    board.addCoin((0, 0))
+    board.addCoin((1, 1))
+    board.addCoin((2, 2))
+
+    assertEquals(board.coinsNumber, 3, "Should have 3 coins")
+    assert(board.coinsPositions.contains((0, 0)), "Should contain coin at (0,0)")
+    assert(board.coinsPositions.contains((1, 1)), "Should contain coin at (1,1)")
+    assert(board.coinsPositions.contains((2, 2)), "Should contain coin at (2,2)")
+  }

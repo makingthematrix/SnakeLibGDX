@@ -66,6 +66,9 @@ final class Board(val size: Int, private var coins: List[(x: Int, y: Int)] = Nil
   def coinsPositions: List[(x: Int, y: Int)] = coins
   def snake: Snake = _snake
 
+  def coinsNumber: Int = coins.size
+  def snakeLength: Int = _snake.body.size
+
   def updateSnake(newSnake: Snake): Unit =
     _snake = newSnake
 
@@ -78,6 +81,19 @@ final class Board(val size: Int, private var coins: List[(x: Int, y: Int)] = Nil
         _snake = _snake.addCoin
         coins = coins.filterNot(_ == head)
     }
+
+  def getEmptyTilePositions: List[(Int, Int)] =
+    val allPositions = for
+      x <- 0 until size
+      y <- 0 until size
+    yield (x, y)
+
+    val occupiedPositions = _snake.body.toSet ++ coins.toSet
+    allPositions.filterNot(occupiedPositions.contains).toList
+
+  def addCoin(position: (Int, Int)): Unit =
+    if !coins.contains(position) && !_snake.body.contains(position) then
+      coins = position :: coins
 
   def updateSnakeDirection(newDir: SnakeDir): Boolean =
     if !newDir.opposite(_snake.snakeDir) then
