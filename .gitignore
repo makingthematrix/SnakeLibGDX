@@ -37,4 +37,5 @@
 *.bloop*
 *.metals*
 *.bsp
-.gradle/*
+*.gradle/*
+*.tasty

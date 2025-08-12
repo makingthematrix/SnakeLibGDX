@@ -63,7 +63,7 @@ configure(subprojects) {
 
 subprojects {
   version = "$projectVersion"
-  ext.appName = 'LibGDXScala'
+  ext.appName = 'SnakeLibGDX'
   repositories {
     mavenCentral()
     maven { url 'https://s01.oss.sonatype.org' }
