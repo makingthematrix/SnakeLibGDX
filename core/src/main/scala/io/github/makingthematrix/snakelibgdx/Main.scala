@@ -5,7 +5,11 @@ import io.github.makingthematrix.snakelibgdx.Main.BOARD_SIZE
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 final class Main extends ApplicationAdapter:
-  private lazy val board = new Board(BOARD_SIZE, List((3, 4), (6, 3)))
+  private lazy val board = Board(
+    size = BOARD_SIZE,
+    coins = List((3, 4), (6, 3)),
+    snake = new Snake(List((3,2), (3, 3), (2, 3), (1, 3)), SnakeDir.Right)
+  )
 
   override def create(): Unit =
     Draw.init()

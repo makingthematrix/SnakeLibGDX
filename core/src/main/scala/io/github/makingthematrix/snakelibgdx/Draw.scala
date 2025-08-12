@@ -13,6 +13,7 @@ object Draw:
   private val TILE_WIDTH = SQUARE_SIZE // Width of an isometric tile
   private val TILE_HEIGHT = SQUARE_SIZE / 2 // Height of isometric tile (half of width for 2:1 ratio)
   private val coinTexture = new Texture(Paths.get("coins.png").toString)
+  private val darkGreen = new Color(0, 0.6f, 0, 1)
 
   private lazy val graphicsWH: (w: Int, h: Int) = (w = Gdx.graphics.getWidth, h = Gdx.graphics.getHeight)
   private lazy val shapeRenderer: ShapeRenderer = new ShapeRenderer()
@@ -39,17 +40,18 @@ object Draw:
     // Begin shape rendering in filled mode
     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
     drawBoard(board)
+    drawSnake(board.snake)
     shapeRenderer.end()
     // Draw the snake
     batch.begin()
     drawCoins(board.coinsPositions)
     batch.end()
-    
+
   def dispose(): Unit =
     shapeRenderer.dispose()
-    batch.dispose()  
-  
-  def drawBoard(board: Board): Unit =
+    batch.dispose()
+
+  private def drawBoard(board: Board): Unit =
     // First pass: Draw filled tiles (white)
     shapeRenderer.setColor(Color.WHITE)
     for
@@ -98,7 +100,30 @@ object Draw:
     shapeRenderer.end()
     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
 
-  def drawCoins(coinPositions: List[(x: Int, y: Int)]): Unit =
+  private def colorTile(pos: (x: Int, y: Int)): Unit =
+    val isoX = start.x + (pos.x - pos.y) * TILE_WIDTH / 2f + Main.BOARD_SIZE * TILE_WIDTH / 2f
+    val isoY = start.y + (pos.x + pos.y - 2f) * TILE_HEIGHT / 2f
+    // Draw the isometric tile (diamond shape)
+    shapeRenderer.triangle(
+      isoX, isoY + TILE_HEIGHT / 2f,
+      isoX + TILE_WIDTH / 2f, isoY,
+      isoX + TILE_WIDTH, isoY + TILE_HEIGHT / 2f
+    )
+    shapeRenderer.triangle(
+      isoX, isoY + TILE_HEIGHT / 2f,
+      isoX + TILE_WIDTH, isoY + TILE_HEIGHT / 2f,
+      isoX + TILE_WIDTH / 2f, isoY + TILE_HEIGHT
+    )
+
+  private def drawSnake(snake: Snake): Unit =
+    val body = snake.getBody
+    if body.nonEmpty then
+      shapeRenderer.setColor(darkGreen)
+      colorTile(body.head)
+      shapeRenderer.setColor(Color.GREEN)
+      body.tail.foreach(colorTile)
+
+  private def drawCoins(coinPositions: List[(x: Int, y: Int)]): Unit =
     for coinPos <- coinPositions do
       drawTexture(coinTexture, coinPos)
 

@@ -1,3 +1,4 @@
+coins.png
 libgdx.png
 snakehead.png
 ui/font-list.fnt
