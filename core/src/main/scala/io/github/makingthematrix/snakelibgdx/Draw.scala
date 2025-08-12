@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.{Sprite, SpriteBatch}
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.graphics.{Color, Texture}
+import com.badlogic.gdx.utils.ScreenUtils
 
 import java.nio.file.Paths
 
@@ -11,10 +12,11 @@ object Draw:
   private val SQUARE_SIZE = 80f // Size of each square in pixels
   private val TILE_WIDTH = SQUARE_SIZE // Width of an isometric tile
   private val TILE_HEIGHT = SQUARE_SIZE / 2 // Height of isometric tile (half of width for 2:1 ratio)
+  private val coinTexture = new Texture(Paths.get("coins.png").toString)
 
   private lazy val graphicsWH: (w: Int, h: Int) = (w = Gdx.graphics.getWidth, h = Gdx.graphics.getHeight)
-
-  private val coinTexture = new Texture(Paths.get("coins.png").toString)
+  private lazy val shapeRenderer: ShapeRenderer = new ShapeRenderer()
+  private lazy val batch = new SpriteBatch()
 
   private lazy val start: (x: Float, y: Float) =
     // Calculate the width and height of the isometric board
@@ -25,7 +27,29 @@ object Draw:
     val startY = (graphicsWH.h - isoHeight) / 2f // Adjust to center vertically
     (startX, startY)
 
-  def draw(board: Board, shapeRenderer: ShapeRenderer): Unit =
+  def init(): Unit =
+    shapeRenderer
+    batch
+    graphicsWH
+    start
+
+  def render(board: Board): Unit =
+    // Clear the screen
+    ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f)
+    // Begin shape rendering in filled mode
+    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+    drawBoard(board)
+    shapeRenderer.end()
+    // Draw the snake
+    batch.begin()
+    drawCoins(board.coinsPositions)
+    batch.end()
+    
+  def dispose(): Unit =
+    shapeRenderer.dispose()
+    batch.dispose()  
+  
+  def drawBoard(board: Board): Unit =
     // First pass: Draw filled tiles (white)
     shapeRenderer.setColor(Color.WHITE)
     for
@@ -74,11 +98,11 @@ object Draw:
     shapeRenderer.end()
     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
 
-  def drawCoins(coinPositions: List[(x: Int, y: Int)], batch: SpriteBatch): Unit =
+  def drawCoins(coinPositions: List[(x: Int, y: Int)]): Unit =
     for coinPos <- coinPositions do
-      drawTexture(coinTexture, batch, coinPos)
+      drawTexture(coinTexture, coinPos)
 
-  private def drawTexture(texture: Texture, batch: SpriteBatch, pos: (x: Int, y: Int)): Unit =
+  private def drawTexture(texture: Texture, pos: (x: Int, y: Int)): Unit =
     // Calculate isometric coordinates for the pawn
     val tokenIsoX = start.x + (pos.x - pos.y) * TILE_WIDTH / 2f + Main.BOARD_SIZE * TILE_WIDTH / 2f
     val tokenIsoY = start.y + (pos.x + pos.y - 1f) * TILE_HEIGHT / 2f
