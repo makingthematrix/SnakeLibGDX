@@ -2,6 +2,11 @@ package io.github.makingthematrix.snakelibgdx
 
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.scenes.scene2d.{Stage, Actor}
+import com.badlogic.gdx.scenes.scene2d.ui.{Dialog, Skin, TextButton, Label}
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.utils.viewport.ScreenViewport
 import io.github.makingthematrix.snakelibgdx.Main.BOARD_SIZE
 import scala.util.Random
 
@@ -19,11 +24,20 @@ final class Main extends ApplicationAdapter:
   private val newCoinInterval: Float = 10f // 10 seconds
   private var lastCoinSpawnTime: Float = 0f
 
+  private lazy val stage: Stage = new Stage(new ScreenViewport())
+  private lazy val skin: Skin = new Skin(Gdx.files.internal("ui/uiskin.json"))
+  private var showingDialog: Boolean = false
+
   override def create(): Unit =
     Draw.init()
 
+    // Initialize UI components
+    stage
+    skin
+    Gdx.input.setInputProcessor(stage)
+
   override def render(): Unit =
-    if gameRunning then
+    if gameRunning && !showingDialog then
       // Always render the current board state
       Draw.render(board)
 
@@ -42,7 +56,7 @@ final class Main extends ApplicationAdapter:
           board.update()
           // Check for self-collision after board update
           if board.hasSnakeSelfCollision then
-            gameRunning = false
+            showScoreDialog()
           lastUpdateTime = 0f
 
         // If coin spawn interval has passed and we haven't reached MAX_COINS, spawn a new coin
@@ -50,8 +64,18 @@ final class Main extends ApplicationAdapter:
           spawnNewCoin()
           lastCoinSpawnTime = 0f
 
+    else if showingDialog then
+      // Render the game board in background
+      Draw.render(board)
+
+    // Always update and draw the UI stage
+    stage.act()
+    stage.draw()
+
   override def dispose(): Unit =
     Draw.dispose()
+    stage.dispose()
+    skin.dispose()
 
   private def selectRandomPosition(positions: List[(Int, Int)]): Option[(Int, Int)] =
     if positions.nonEmpty then
@@ -65,6 +89,28 @@ final class Main extends ApplicationAdapter:
       case Some(position) => board.addCoin(position)
       case None => // No empty positions available, do nothing
 
+  private def showScoreDialog(): Unit =
+    showingDialog = true
+    val score = board.snake.body.size
+    val dialog = new Dialog("Game Over", skin)
+
+    // Add score label to dialog
+    val scoreLabel = new Label(s"Score: $score", skin)
+    dialog.getContentTable.add(scoreLabel).pad(20f)
+
+    // Add OK button
+    val okButton = new TextButton("OK", skin)
+    okButton.addListener(new ClickListener() {
+      override def clicked(event: InputEvent, x: Float, y: Float): Unit = {
+        // Exit the application when OK is clicked
+        Gdx.app.exit()
+      }
+    })
+    dialog.getButtonTable.add(okButton).pad(10f)
+
+    // Show the dialog
+    dialog.show(stage)
+
   private def handleKeyPress(): Unit =
     import com.badlogic.gdx.Input.Keys.*
     if Gdx.input.isKeyPressed(LEFT) then board.updateSnakeDirection(SnakeDir.Left)
@@ -74,4 +120,4 @@ final class Main extends ApplicationAdapter:
 
 object Main:
   val BOARD_SIZE: Int = 8
-  val MAX_COINS: Int = 10
+  private val MAX_COINS: Int = 10
