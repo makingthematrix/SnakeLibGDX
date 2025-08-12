@@ -13,9 +13,6 @@ class Main extends ApplicationAdapter:
   private lazy val batch = new SpriteBatch()
   private lazy val board = Board(BOARD_SIZE)
 
-  val token1 = Token(Tile.SnakeHead, None, (3, 4))
-  val token2 = Token(Tile.SnakeHead, None, (6, 3))
-
   override def create(): Unit =
     shapeRenderer
     batch
@@ -29,7 +26,7 @@ class Main extends ApplicationAdapter:
     shapeRenderer.end()
     // Draw the snake
     batch.begin()
-    Draw.drawTokens(List(token1, token2), batch)
+    Draw.drawCoins(List((3, 4), (6, 3)), batch)
     batch.end()
 
   override def dispose(): Unit =

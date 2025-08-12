@@ -1,7 +1,7 @@
 package io.github.makingthematrix.snakelibgdx
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.{Sprite, SpriteBatch}
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.graphics.{Color, Texture}
 
@@ -14,13 +14,7 @@ object Draw:
 
   private lazy val graphicsWH: (w: Int, h: Int) = (w = Gdx.graphics.getWidth, h = Gdx.graphics.getHeight)
 
-  lazy val textures = Map[Tile, Option[Texture]](
-    Tile.Empty -> None,
-    Tile.SnakeHead -> Some(new Texture(Paths.get("snakehead.png").toString)),
-    Tile.SnakeBody -> Some(new Texture(Paths.get("pawn.png").toString)),
-    Tile.SnakeTail -> Some(new Texture(Paths.get("pawn.png").toString)),
-    Tile.Coin -> Some(new Texture(Paths.get("pawn.png").toString))
-  )
+  private val coinTexture = new Texture(Paths.get("coins.png").toString)
 
   private lazy val start: (x: Float, y: Float) =
     // Calculate the width and height of the isometric board
@@ -80,15 +74,24 @@ object Draw:
     shapeRenderer.end()
     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
 
-  def drawTokens(tokens: List[Token], batch: SpriteBatch): Unit =
-    for token <- tokens do
-      textures(token.tile).foreach { texture =>
-        // Calculate isometric coordinates for the pawn
-        val tokenIsoX = start.x + (token.pos.x - token.pos.y) * TILE_WIDTH / 2f + Main.BOARD_SIZE * TILE_WIDTH / 2f
-        val tokenIsoY = start.y + (token.pos.x + token.pos.y - 1f) * TILE_HEIGHT / 2f
-        // Adjust the pawn position to center it on the tile
-        val tokenX = tokenIsoX + (TILE_WIDTH - SQUARE_SIZE) / 2f
-        val tokenY = tokenIsoY - SQUARE_SIZE / 4f // Adjust to position pawn on the tile
-        batch.draw(texture, tokenX, tokenY, SQUARE_SIZE, SQUARE_SIZE)
-      }
+  def drawCoins(coinPositions: List[(x: Int, y: Int)], batch: SpriteBatch): Unit =
+    for coinPos <- coinPositions do
+      drawTexture(coinTexture, batch, coinPos)
+
+  private def drawTexture(texture: Texture, batch: SpriteBatch, pos: (x: Int, y: Int)): Unit =
+    // Calculate isometric coordinates for the pawn
+    val tokenIsoX = start.x + (pos.x - pos.y) * TILE_WIDTH / 2f + Main.BOARD_SIZE * TILE_WIDTH / 2f
+    val tokenIsoY = start.y + (pos.x + pos.y - 1f) * TILE_HEIGHT / 2f
+    // Adjust the pawn position to center it on the tile
+    val tokenX = tokenIsoX + (1.5f * TILE_WIDTH - SQUARE_SIZE) / 2f
+    val tokenY = tokenIsoY - SQUARE_SIZE / 4f// Adjust to position pawn on the tile
+
+    // Wrap the Texture into Sprite and set its size to the size of the square
+    val sprite = new Sprite(texture)
+    sprite.setSize(SQUARE_SIZE / 2f, SQUARE_SIZE / 2f)
+    sprite.setPosition(tokenX, tokenY)
+
+    // Set the origin to the center of the sprite for proper rotation
+    sprite.setOrigin(SQUARE_SIZE / 2f, SQUARE_SIZE / 2f)
+    sprite.draw(batch)
 
