@@ -8,7 +8,7 @@ import scala.util.Random
 final class Main extends ApplicationAdapter:
   private lazy val board = Board(
     size = BOARD_SIZE,
-    coins = List((3, 4), (6, 3), (0, 0), (7, 7), (0, 7), (7, 0)),
+    coins = List((6, 3), (5, 2)),
     snake = new Snake(List((3,4), (2, 4), (1, 4)), SnakeDir.Right)
   )
 
@@ -40,6 +40,9 @@ final class Main extends ApplicationAdapter:
         // If 1 second has passed, update the board
         if lastUpdateTime >= updateInterval then
           board.update()
+          // Check for self-collision after board update
+          if board.hasSnakeSelfCollision then
+            gameRunning = false
           lastUpdateTime = 0f
 
         // If coin spawn interval has passed and we haven't reached MAX_COINS, spawn a new coin

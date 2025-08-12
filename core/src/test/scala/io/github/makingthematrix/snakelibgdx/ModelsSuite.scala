@@ -589,3 +589,43 @@ class ModelsSuite extends FunSuite:
     assert(board.coinsPositions.contains((1, 1)), "Should contain coin at (1,1)")
     assert(board.coinsPositions.contains((2, 2)), "Should contain coin at (2,2)")
   }
+
+  // Board hasSnakeSelfCollision tests
+  test("Board hasSnakeSelfCollision should return false for empty snake") {
+    val board = Board.apply(5) // Empty snake by default
+    assertEquals(board.hasSnakeSelfCollision, false, "Empty snake should not have self-collision")
+  }
+
+  test("Board hasSnakeSelfCollision should return false for single element snake") {
+    val snake = Snake.apply(List((3, 3))).get
+    val board = Board.apply(5, Nil, snake)
+    assertEquals(board.hasSnakeSelfCollision, false, "Single element snake should not have self-collision")
+  }
+
+  test("Board hasSnakeSelfCollision should return false for normal multi-element snake") {
+    val snake = Snake.apply(List((3, 3), (2, 3), (1, 3))).get
+    val board = Board.apply(5, Nil, snake)
+    assertEquals(board.hasSnakeSelfCollision, false, "Normal snake should not have self-collision")
+  }
+
+  test("Board hasSnakeSelfCollision should return true when snake head collides with body after update") {
+    // Create a normal snake that will collide with itself when it moves
+    val snake = Snake.apply(List((2, 2), (2, 3), (2, 4), (3, 4), (3, 3), (3, 2), (2, 2))).get // This is discontinuous, let's create a simpler test
+    // Actually, let's test by manually creating a snake with collision using updateSnake
+    val normalSnake = Snake.apply(List((3, 3), (2, 3), (1, 3))).get
+    val board = Board.apply(5, Nil, normalSnake)
+
+    // Manually create a snake with head collision by creating a new snake instance with collision
+    val collisionSnake = new Snake(List((2, 3), (2, 3), (1, 3)), SnakeDir.Right, false) // Head at (2,3) matches body at (2,3)
+    board.updateSnake(collisionSnake)
+
+    assertEquals(board.hasSnakeSelfCollision, true, "Snake with head-body collision should return true")
+  }
+
+  test("Board hasSnakeSelfCollision should detect collision in complex snake patterns") {
+    // Test with a manually constructed snake that has self-collision
+    // Create a snake where the head position appears elsewhere in the body
+    val collisionSnake = new Snake(List((3, 3), (2, 3), (1, 3), (1, 2), (2, 2), (3, 2), (3, 3)), SnakeDir.Up, false)
+    val board = Board.apply(5, Nil, collisionSnake)
+    assertEquals(board.hasSnakeSelfCollision, true, "Complex snake with self-collision should return true")
+  }

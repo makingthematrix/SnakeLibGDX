@@ -1,9 +1,9 @@
 package io.github.makingthematrix.snakelibgdx
 
 enum SnakeDir (val x: Int, val y: Int):
-  case Up extends SnakeDir(0, 1)
+  case Up extends SnakeDir(0, -1)
   case Right extends SnakeDir(1, 0)
-  case Down extends SnakeDir(0, -1)
+  case Down extends SnakeDir(0, 1)
   case Left extends SnakeDir(-1, 0)
 
   def opposite(other: SnakeDir): Boolean =
@@ -12,6 +12,11 @@ enum SnakeDir (val x: Int, val y: Int):
       case _ => false
 
 final class Snake(val body: List[(x: Int, y: Int)], val snakeDir: SnakeDir, val hasCoin: Boolean = false):
+  /** Returns true if the snake's head occupies the same position as any part of its body */
+  def hasSelfCollision: Boolean = body match
+    case head :: tail => tail.contains(head)
+    case _ => false
+
   def addCoin: Snake = new Snake(body, snakeDir, true)
   def setHasCoin(newHasCoin: Boolean): Snake = new Snake(body, snakeDir, newHasCoin)
 
@@ -37,6 +42,7 @@ final class Snake(val body: List[(x: Int, y: Int)], val snakeDir: SnakeDir, val 
         // Normal movement - remove last, add new head with wrapping
         val newBody = newHead :: body.init // init removes the last element
         new Snake(newBody, snakeDir, false)
+
 
   private def wrapCoordinate(x: Int, y: Int): (Int, Int) =
     val wrappedX = if x == -1 then Main.BOARD_SIZE - 1 else if x == Main.BOARD_SIZE then 0 else x
@@ -101,6 +107,8 @@ final class Board(val size: Int, private var coins: List[(x: Int, y: Int)] = Nil
       true
     else
       false
+
+  def hasSnakeSelfCollision: Boolean = _snake.hasSelfCollision
 
 
 object Board:
