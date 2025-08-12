@@ -6,7 +6,12 @@ enum SnakeDir (val x: Int, val y: Int):
   case Down extends SnakeDir(0, -1)
   case Left extends SnakeDir(-1, 0)
 
-final class Snake(body: List[(x: Int, y: Int)], snakeDir: SnakeDir):
+  def opposite(other: SnakeDir): Boolean =
+    (this, other) match
+      case (Up, Down) | (Down, Up) | (Left, Right) | (Right, Left) => true
+      case _ => false
+
+final class Snake(body: List[(x: Int, y: Int)], val snakeDir: SnakeDir):
 
   def getBody: List[(x: Int, y: Int)] = body
 
@@ -63,6 +68,13 @@ final class Board(val size: Int, private var coins: List[(x: Int, y: Int)] = Nil
       if coins.contains(head) then
         coins = coins.filterNot(_ == head)
     }
+
+  def updateSnakeDirection(newDir: SnakeDir): Boolean =
+    if !newDir.opposite(_snake.snakeDir) then
+      _snake = _snake.changeDirection(newDir)
+      true
+    else
+      false
 
 
 object Board:

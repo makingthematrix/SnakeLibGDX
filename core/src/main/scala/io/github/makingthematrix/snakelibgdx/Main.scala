@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import io.github.makingthematrix.snakelibgdx.Main.BOARD_SIZE
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 final class Main extends ApplicationAdapter:
   private lazy val board = Board(
     size = BOARD_SIZE,
@@ -26,7 +25,8 @@ final class Main extends ApplicationAdapter:
 
       // Check if any key is pressed
       if Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.ANY_KEY) then
-        gameRunning = false
+        handleKeyPress()
+
       else
         // Update timing
         val currentTime = Gdx.graphics.getDeltaTime
@@ -39,6 +39,13 @@ final class Main extends ApplicationAdapter:
 
   override def dispose(): Unit =
     Draw.dispose()
+
+  private def handleKeyPress(): Unit =
+    import com.badlogic.gdx.Input.Keys.*
+    if Gdx.input.isKeyPressed(LEFT) then board.updateSnakeDirection(SnakeDir.Left)
+    else if Gdx.input.isKeyPressed(RIGHT) then board.updateSnakeDirection(SnakeDir.Right)
+    else if Gdx.input.isKeyPressed(UP) then board.updateSnakeDirection(SnakeDir.Up)
+    else if Gdx.input.isKeyPressed(DOWN) then board.updateSnakeDirection(SnakeDir.Down)
 
 object Main:
   val BOARD_SIZE: Int = 8
