@@ -8,7 +8,7 @@ final class Main extends ApplicationAdapter:
   private lazy val board = Board(
     size = BOARD_SIZE,
     coins = List((3, 4), (6, 3), (0, 0), (7, 7), (0, 7), (7, 0)),
-    snake = new Snake(List((3,2), (3, 3), (2, 3), (1, 3)), SnakeDir.Down)
+    snake = new Snake(List((3,2), (3, 3), (2, 3), (1, 3)), SnakeDir.Right)
   )
 
   private var lastUpdateTime: Float = 0f

@@ -11,28 +11,32 @@ enum SnakeDir (val x: Int, val y: Int):
       case (Up, Down) | (Down, Up) | (Left, Right) | (Right, Left) => true
       case _ => false
 
-final class Snake(body: List[(x: Int, y: Int)], val snakeDir: SnakeDir):
+final class Snake(val body: List[(x: Int, y: Int)], val snakeDir: SnakeDir, val hasCoin: Boolean = false):
+  def addCoin: Snake = new Snake(body, snakeDir, true)
+  def setHasCoin(newHasCoin: Boolean): Snake = new Snake(body, snakeDir, newHasCoin)
 
-  def getBody: List[(x: Int, y: Int)] = body
+  def changeDirection(newDir: SnakeDir): Snake = new Snake(body, newDir, hasCoin)
 
-  def changeDirection(newDir: SnakeDir): Snake =
-    new Snake(body, newDir)
-
-  def crawl: Snake =
-    body match
-      case Nil =>
-        // Empty body - create new head at (0,0) moved by snakeDir with wrapping
-        val newHead = wrapCoordinate(snakeDir.x, snakeDir.y)
-        new Snake(List(newHead), snakeDir)
-      case head :: Nil =>
-        // Single element - new head is current head moved by snakeDir with wrapping
-        val newHead = wrapCoordinate(head.x + snakeDir.x, head.y + snakeDir.y)
-        new Snake(List(newHead), snakeDir)
-      case head :: tail =>
-        // Multiple elements - remove last, add new head with wrapping
-        val newHead = wrapCoordinate(head.x + snakeDir.x, head.y + snakeDir.y)
+  def crawl: Snake = body match
+    case Nil =>
+      // Empty body - create new head at (0,0) moved by snakeDir with wrapping
+      val newHead = wrapCoordinate(snakeDir.x, snakeDir.y)
+      new Snake(List(newHead), snakeDir, false) // hasCoin always false for new snake
+    case head :: Nil =>
+      // Single element - new head is current head moved by snakeDir with wrapping
+      val newHead = wrapCoordinate(head.x + snakeDir.x, head.y + snakeDir.y)
+      new Snake(List(newHead), snakeDir, false) // hasCoin always false for single element
+    case head :: tail =>
+      // Multiple elements - check hasCoin to determine if we grow or move normally
+      val newHead = wrapCoordinate(head.x + snakeDir.x, head.y + snakeDir.y)
+      if hasCoin then
+        // Snake has coin - grow by not removing tail, set hasCoin to false
+        val newBody = newHead :: body
+        new Snake(newBody, snakeDir, false)
+      else
+        // Normal movement - remove last, add new head with wrapping
         val newBody = newHead :: body.init // init removes the last element
-        new Snake(newBody, snakeDir)
+        new Snake(newBody, snakeDir, false)
 
   private def wrapCoordinate(x: Int, y: Int): (Int, Int) =
     val wrappedX = if x == -1 then Main.BOARD_SIZE - 1 else if x == Main.BOARD_SIZE then 0 else x
@@ -40,12 +44,12 @@ final class Snake(body: List[(x: Int, y: Int)], val snakeDir: SnakeDir):
     (wrappedX, wrappedY)
 
 object Snake:
-  def apply(): Snake = new Snake(Nil, SnakeDir.Right)
+  def apply(): Snake = new Snake(Nil, SnakeDir.Right, false)
 
   def apply(body: List[(x: Int, y: Int)], snakeDir: SnakeDir = SnakeDir.Right): Option[Snake] =
     if isContinuous(body) then
       // For now, default direction is Right - this could be enhanced to detect direction from body
-      Some(new Snake(body, snakeDir))
+      Some(new Snake(body, snakeDir, false))
     else
       None
 
@@ -62,10 +66,16 @@ final class Board(val size: Int, private var coins: List[(x: Int, y: Int)] = Nil
   def coinsPositions: List[(x: Int, y: Int)] = coins
   def snake: Snake = _snake
 
+  def updateSnake(newSnake: Snake): Unit =
+    _snake = newSnake
+
   def update(): Unit =
+    // First crawl the snake to new position
     _snake = _snake.crawl
-    _snake.getBody.headOption.foreach { head =>
+    // Then check if the new snake head is on a coin position
+    _snake.body.headOption.foreach { head =>
       if coins.contains(head) then
+        _snake = _snake.addCoin
         coins = coins.filterNot(_ == head)
     }
 

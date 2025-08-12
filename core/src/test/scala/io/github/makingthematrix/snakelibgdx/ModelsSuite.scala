@@ -166,9 +166,9 @@ class ModelsSuite extends FunSuite:
   test("crawl should preserve snake size") {
     val originalBody = List((5, 3), (4, 3), (3, 3), (2, 3)) // 4-element snake moving right
     val snake = Snake.apply(originalBody).get
-    val originalSize = snake.getBody.size
+    val originalSize = snake.body.size
     val crawledSnake = snake.crawl
-    val newSize = crawledSnake.getBody.size
+    val newSize = crawledSnake.body.size
 
     assertEquals(newSize, originalSize, "Snake size should remain the same after crawl")
     assertEquals(newSize, 4, "Snake should still have 4 elements")
@@ -178,7 +178,7 @@ class ModelsSuite extends FunSuite:
     val originalBody = List((3, 2), (2, 2), (1, 2)) // 3-element snake at positions (3,2), (2,2), (1,2)
     val snake = Snake.apply(originalBody).get.changeDirection(SnakeDir.Right) // Explicitly set to Right
     val crawledSnake = snake.crawl
-    val newBody = crawledSnake.getBody
+    val newBody = crawledSnake.body
 
     // After crawling right: new head at (4,2), original head becomes body (3,2), middle stays (2,2), tail (1,2) removed
     val expectedBody = List((4, 2), (3, 2), (2, 2))
@@ -197,7 +197,7 @@ class ModelsSuite extends FunSuite:
   test("crawl should wrap left from x=0 to x=7") {
     val snake = Snake.apply(List((0, 4))).get.changeDirection(SnakeDir.Left)
     val crawledSnake = snake.crawl
-    val newBody = crawledSnake.getBody
+    val newBody = crawledSnake.body
 
     assertEquals(newBody.head, (7, 4), "Snake moving left from x=0 should wrap to x=7")
   }
@@ -205,7 +205,7 @@ class ModelsSuite extends FunSuite:
   test("crawl should wrap up from y=0 to y=7") {
     val snake = Snake.apply(List((4, 0))).get.changeDirection(SnakeDir.Up)
     val crawledSnake = snake.crawl
-    val newBody = crawledSnake.getBody
+    val newBody = crawledSnake.body
 
     assertEquals(newBody.head, (4, 7), "Snake moving up from y=0 should wrap to y=7")
   }
@@ -213,7 +213,7 @@ class ModelsSuite extends FunSuite:
   test("crawl should wrap right from x=7 to x=0") {
     val snake = Snake.apply(List((7, 4))).get.changeDirection(SnakeDir.Right)
     val crawledSnake = snake.crawl
-    val newBody = crawledSnake.getBody
+    val newBody = crawledSnake.body
 
     assertEquals(newBody.head, (0, 4), "Snake moving right from x=7 should wrap to x=0")
   }
@@ -221,7 +221,7 @@ class ModelsSuite extends FunSuite:
   test("crawl should wrap down from y=7 to y=0") {
     val snake = Snake.apply(List((4, 7))).get.changeDirection(SnakeDir.Down)
     val crawledSnake = snake.crawl
-    val newBody = crawledSnake.getBody
+    val newBody = crawledSnake.body
 
     assertEquals(newBody.head, (4, 0), "Snake moving down from y=7 should wrap to y=0")
   }
@@ -229,7 +229,7 @@ class ModelsSuite extends FunSuite:
   test("crawl should not wrap when moving within board boundaries") {
     val snake = Snake.apply(List((3, 3))).get.changeDirection(SnakeDir.Right)
     val crawledSnake = snake.crawl
-    val newBody = crawledSnake.getBody
+    val newBody = crawledSnake.body
 
     assertEquals(newBody.head, (4, 3), "Snake moving within boundaries should not wrap")
   }
@@ -237,7 +237,7 @@ class ModelsSuite extends FunSuite:
   test("crawl should wrap with multi-element snake from left boundary") {
     val snake = Snake.apply(List((0, 4), (1, 4))).get.changeDirection(SnakeDir.Left)
     val crawledSnake = snake.crawl
-    val newBody = crawledSnake.getBody
+    val newBody = crawledSnake.body
 
     assertEquals(newBody, List((7, 4), (0, 4)), "Multi-element snake wrapping left should have correct structure")
   }
@@ -245,7 +245,7 @@ class ModelsSuite extends FunSuite:
   test("crawl should wrap with multi-element snake from right boundary") {
     val snake = Snake.apply(List((7, 4), (6, 4))).get.changeDirection(SnakeDir.Right)
     val crawledSnake = snake.crawl
-    val newBody = crawledSnake.getBody
+    val newBody = crawledSnake.body
 
     assertEquals(newBody, List((0, 4), (7, 4)), "Multi-element snake wrapping right should have correct structure")
   }
@@ -253,7 +253,7 @@ class ModelsSuite extends FunSuite:
   test("crawl should wrap with multi-element snake from top boundary") {
     val snake = Snake.apply(List((4, 0), (4, 1))).get.changeDirection(SnakeDir.Up)
     val crawledSnake = snake.crawl
-    val newBody = crawledSnake.getBody
+    val newBody = crawledSnake.body
 
     assertEquals(newBody, List((4, 7), (4, 0)), "Multi-element snake wrapping up should have correct structure")
   }
@@ -261,7 +261,7 @@ class ModelsSuite extends FunSuite:
   test("crawl should wrap with multi-element snake from bottom boundary") {
     val snake = Snake.apply(List((4, 7), (4, 6))).get.changeDirection(SnakeDir.Down)
     val crawledSnake = snake.crawl
-    val newBody = crawledSnake.getBody
+    val newBody = crawledSnake.body
 
     assertEquals(newBody, List((4, 0), (4, 7)), "Multi-element snake wrapping down should have correct structure")
   }
@@ -269,7 +269,7 @@ class ModelsSuite extends FunSuite:
   test("crawl should handle corner wrapping - top-left to bottom-right") {
     val snake = Snake.apply(List((0, 0))).get.changeDirection(SnakeDir.Up).changeDirection(SnakeDir.Left)
     val crawledSnake = snake.crawl
-    val newBody = crawledSnake.getBody
+    val newBody = crawledSnake.body
 
     assertEquals(newBody.head, (7, 0), "Snake at top-left corner moving left should wrap to right side")
   }
@@ -328,4 +328,154 @@ class ModelsSuite extends FunSuite:
 
     // Verify they are different instances
     assert(board1 ne board2, "Boards should be different instances")
+  }
+
+  // hasCoin functionality tests
+  test("Snake should have hasCoin false by default") {
+    val snake = Snake.apply(List((3, 3), (2, 3))).get
+    assertEquals(snake.hasCoin, false, "Snake should have hasCoin false by default")
+  }
+
+  test("Snake getHasCoin should return correct value") {
+    val snake = Snake.apply(List((3, 3), (2, 3))).get
+    assertEquals(snake.hasCoin, false, "getHasCoin should return false for new snake")
+
+    val snakeWithCoin = snake.addCoin
+    assertEquals(snakeWithCoin.hasCoin, true, "getHasCoin should return true after setting to true")
+  }
+
+  test("Snake setHasCoin should create new snake with updated hasCoin value") {
+    val originalSnake = Snake.apply(List((3, 3), (2, 3))).get
+    val snakeWithCoin = originalSnake.addCoin
+    val snakeWithoutCoin = originalSnake.setHasCoin(false)
+
+    assertEquals(originalSnake.hasCoin, false, "Original snake should still have hasCoin false")
+    assertEquals(snakeWithCoin.hasCoin, true, "New snake should have hasCoin true")
+    assertEquals(snakeWithoutCoin.hasCoin, false, "New snake should have hasCoin false")
+
+    // Body and direction should be preserved
+    assertEquals(snakeWithCoin.body, originalSnake.body, "Body should be preserved when setting hasCoin")
+  }
+
+  test("Snake crawl with hasCoin false should remove tail normally") {
+    val snake = Snake.apply(List((3, 3), (2, 3), (1, 3))).get.changeDirection(SnakeDir.Right)
+    assertEquals(snake.hasCoin, false, "Snake should start with hasCoin false")
+
+    val crawledSnake = snake.crawl
+    val newBody = crawledSnake.body
+
+    assertEquals(newBody.size, 3, "Snake size should remain the same (tail removed, head added)")
+    assertEquals(newBody, List((4, 3), (3, 3), (2, 3)), "Snake should move normally with tail removal")
+    assertEquals(crawledSnake.hasCoin, false, "Snake should have hasCoin false after crawl")
+  }
+
+  test("Snake crawl with hasCoin true should grow (not remove tail)") {
+    val snake = Snake.apply(List((3, 3), (2, 3), (1, 3))).get.changeDirection(SnakeDir.Right).addCoin
+    assertEquals(snake.hasCoin, true, "Snake should have hasCoin true")
+
+    val crawledSnake = snake.crawl
+    val newBody = crawledSnake.body
+
+    assertEquals(newBody.size, 4, "Snake should grow (no tail removal)")
+    assertEquals(newBody, List((4, 3), (3, 3), (2, 3), (1, 3)), "Snake should grow by keeping tail and adding head")
+    assertEquals(crawledSnake.hasCoin, false, "Snake should have hasCoin false after growing crawl")
+  }
+
+  test("Snake crawl with hasCoin true on single element should not grow") {
+    val snake = Snake.apply(List((3, 3))).get.changeDirection(SnakeDir.Right).addCoin
+    assertEquals(snake.hasCoin, true, "Snake should have hasCoin true")
+
+    val crawledSnake = snake.crawl
+    val newBody = crawledSnake.body
+
+    assertEquals(newBody.size, 1, "Single element snake should remain size 1")
+    assertEquals(newBody, List((4, 3)), "Single element snake should move to new position")
+    assertEquals(crawledSnake.hasCoin, false, "Snake should have hasCoin false after crawl")
+  }
+
+  test("Snake crawl with hasCoin true on empty snake should not grow") {
+    val snake = Snake.apply(List()).get.addCoin
+    assertEquals(snake.hasCoin, true, "Snake should have hasCoin true")
+
+    val crawledSnake = snake.crawl
+    val newBody = crawledSnake.body
+
+    assertEquals(newBody.size, 1, "Empty snake should become size 1")
+    assertEquals(crawledSnake.hasCoin, false, "Snake should have hasCoin false after crawl")
+  }
+
+  test("changeDirection should preserve hasCoin value") {
+    val snake = Snake.apply(List((3, 3), (2, 3))).get.addCoin
+    assertEquals(snake.hasCoin, true, "Snake should have hasCoin true")
+
+    val changedSnake = snake.changeDirection(SnakeDir.Up)
+    assertEquals(changedSnake.hasCoin, true, "hasCoin should be preserved after direction change")
+    assertEquals(changedSnake.body, snake.body, "Body should be preserved after direction change")
+  }
+
+  test("Board updateSnake should update the snake instance") {
+    val board = Board.apply(8)
+    val newSnake = Snake.apply(List((5, 5), (4, 5))).get
+
+    board.updateSnake(newSnake)
+    assertEquals(board.snake.body, newSnake.body, "Board should have updated snake")
+  }
+
+  test("Board update should set hasCoin to true when snake head hits coin") {
+    val coins = List((4, 3), (6, 6))
+    val snake = Snake.apply(List((3, 3), (2, 3))).get.changeDirection(SnakeDir.Right)
+    val board = Board.apply(8, coins, snake)
+
+    assertEquals(board.snake.hasCoin, false, "Snake should start with hasCoin false")
+    assertEquals(board.coinsPositions.size, 2, "Board should start with 2 coins")
+
+    board.update() // Snake head moves from (3,3) to (4,3) which has a coin
+
+    assertEquals(board.snake.hasCoin, true, "Snake should have hasCoin true after collecting coin")
+    assertEquals(board.coinsPositions.size, 1, "Board should have 1 coin left after collection")
+    assert(!board.coinsPositions.contains((4, 3)), "Collected coin should be removed")
+    assertEquals(board.snake.body.size, 2, "Snake should not grow yet (growth happens on next turn)")
+
+    // Second update - snake should grow now because hasCoin was true
+    board.update()
+    assertEquals(board.snake.hasCoin, false, "Snake should have hasCoin false after growth")
+    assertEquals(board.snake.body.size, 3, "Snake should grow on second turn")
+  }
+
+  test("Board update should not affect snake when no coin is hit") {
+    val coins = List((6, 6), (7, 7))
+    val snake = Snake.apply(List((3, 3), (2, 3))).get.changeDirection(SnakeDir.Right)
+    val board = Board.apply(8, coins, snake)
+
+    assertEquals(board.snake.hasCoin, false, "Snake should start with hasCoin false")
+    assertEquals(board.coinsPositions.size, 2, "Board should start with 2 coins")
+
+    board.update() // Snake head moves from (3,3) to (4,3) which has no coin
+
+    assertEquals(board.snake.hasCoin, false, "Snake should still have hasCoin false")
+    assertEquals(board.coinsPositions.size, 2, "Board should still have 2 coins")
+    assertEquals(board.snake.body.size, 2, "Snake should maintain size (normal crawl)")
+  }
+
+  test("Board update should handle multiple coin collections correctly") {
+    val coins = List((4, 3), (5, 3))
+    val snake = Snake.apply(List((3, 3), (2, 3))).get.changeDirection(SnakeDir.Right)
+    val board = Board.apply(8, coins, snake)
+
+    // First update: collect coin at (4, 3)
+    board.update()
+    assertEquals(board.coinsPositions.size, 1, "Should have 1 coin left after first collection")
+    assertEquals(board.snake.hasCoin, true, "Snake should have hasCoin true after collecting first coin")
+    assertEquals(board.snake.body.size, 2, "Snake should not grow yet")
+
+    // Second update: should grow from first coin and collect second coin at (5, 3)
+    board.update()
+    assertEquals(board.coinsPositions.size, 0, "Should have 0 coins left after second collection")
+    assertEquals(board.snake.hasCoin, true, "Snake should have hasCoin true after collecting second coin")
+    assertEquals(board.snake.body.size, 3, "Snake should grow from first coin")
+
+    // Third update: should grow from second coin
+    board.update()
+    assertEquals(board.snake.hasCoin, false, "Snake should have hasCoin false after growth")
+    assertEquals(board.snake.body.size, 4, "Snake should grow from second coin")
   }

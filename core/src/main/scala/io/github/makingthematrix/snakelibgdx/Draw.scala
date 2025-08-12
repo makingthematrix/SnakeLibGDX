@@ -116,7 +116,7 @@ object Draw:
     )
 
   private def drawSnake(snake: Snake): Unit =
-    val body = snake.getBody
+    val body = snake.body
     if body.nonEmpty then
       shapeRenderer.setColor(darkGreen)
       colorTile(body.head)

@@ -23,7 +23,7 @@
 <tr>
 <td>
 <div class="infoBox" id="tests">
-<div class="counter">40</div>
+<div class="counter">52</div>
 <p>tests</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.037s</div>
+<div class="counter">0.035s</div>
 <p>duration</p>
 </div>
 </td>
@@ -81,12 +81,12 @@
 </tr>
 <tr>
 <td class="success">Board companion object apply should work with different sizes</td>
-<td class="success">0.001s</td>
+<td class="success">0s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Board should be created with size and coins</td>
-<td class="success">0.002s</td>
+<td class="success">0.001s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -100,12 +100,67 @@
 <td class="success">passed</td>
 </tr>
 <tr>
+<td class="success">Board update should handle multiple coin collections correctly</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board update should not affect snake when no coin is hit</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board update should set hasCoin to true when snake head hits coin</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board updateSnake should update the snake instance</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
 <td class="success">Board.coinsPositions should return the coins list</td>
 <td class="success">0s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Multiple boards should be independent</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake crawl with hasCoin false should remove tail normally</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake crawl with hasCoin true on empty snake should not grow</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake crawl with hasCoin true on single element should not grow</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake crawl with hasCoin true should grow (not remove tail)</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake getHasCoin should return correct value</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake setHasCoin should create new snake with updated hasCoin value</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake should have hasCoin false by default</td>
 <td class="success">0.001s</td>
 <td class="success">passed</td>
 </tr>
@@ -121,7 +176,7 @@
 </tr>
 <tr>
 <td class="success">Snake.apply should create snake for empty body list</td>
-<td class="success">0.015s</td>
+<td class="success">0.014s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -131,7 +186,7 @@
 </tr>
 <tr>
 <td class="success">Snake.apply should create snake for single element body</td>
-<td class="success">0.001s</td>
+<td class="success">0s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -146,12 +201,12 @@
 </tr>
 <tr>
 <td class="success">Snake.apply should reject discontinuous horizontal sequence</td>
-<td class="success">0.001s</td>
+<td class="success">0s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Snake.apply should reject discontinuous vertical sequence</td>
-<td class="success">0.001s</td>
+<td class="success">0s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -166,6 +221,11 @@
 </tr>
 <tr>
 <td class="success">Snake.apply should validate continuity for L-shaped snake</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">changeDirection should preserve hasCoin value</td>
 <td class="success">0s</td>
 <td class="success">passed</td>
 </tr>
@@ -191,12 +251,12 @@
 </tr>
 <tr>
 <td class="success">crawl should handle empty snake body</td>
-<td class="success">0s</td>
+<td class="success">0.001s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">crawl should handle single element snake</td>
-<td class="success">0.001s</td>
+<td class="success">0s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -221,17 +281,17 @@
 </tr>
 <tr>
 <td class="success">crawl should wrap down from y=7 to y=0</td>
-<td class="success">0.001s</td>
+<td class="success">0s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">crawl should wrap left from x=0 to x=7</td>
-<td class="success">0.001s</td>
+<td class="success">0s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">crawl should wrap right from x=7 to x=0</td>
-<td class="success">0s</td>
+<td class="success">0.001s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -246,7 +306,7 @@
 </tr>
 <tr>
 <td class="success">crawl should wrap with multi-element snake from left boundary</td>
-<td class="success">0s</td>
+<td class="success">0.001s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -261,12 +321,12 @@
 </tr>
 <tr>
 <td class="success">crawl with Right direction should have correct body structure</td>
-<td class="success">0.001s</td>
+<td class="success">0s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">crawl with different directions should move head correctly</td>
-<td class="success">0.001s</td>
+<td class="success">0s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -284,7 +344,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 8.14.1</a> at Aug 12, 2025, 4:15:43 PM</p>
+<a href="https://www.gradle.org">Gradle 8.14.1</a> at Aug 12, 2025, 4:48:24 PM</p>
 </div>
 </div>
 </body>
