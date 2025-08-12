@@ -1,15 +1,27 @@
 package io.github.makingthematrix.snakelibgdx
 
 enum SnakeDir (val x: Int, val y: Int):
-  case Up extends SnakeDir(0, -1)
+  case Up extends SnakeDir(0, 1)
   case Right extends SnakeDir(1, 0)
-  case Down extends SnakeDir(0, 1)
+  case Down extends SnakeDir(0, -1)
   case Left extends SnakeDir(-1, 0)
 
   def opposite(other: SnakeDir): Boolean =
     (this, other) match
       case (Up, Down) | (Down, Up) | (Left, Right) | (Right, Left) => true
       case _ => false
+
+  def rotateClockwise: SnakeDir = this match
+    case Up => Right
+    case Right => Down
+    case Down => Left
+    case Left => Up
+
+  def rotateCounterClockwise: SnakeDir = this match
+    case Up => Left
+    case Left => Down
+    case Down => Right
+    case Right => Up
 
 final class Snake(val body: List[(x: Int, y: Int)], val snakeDir: SnakeDir, val hasCoin: Boolean = false):
   /** Returns true if the snake's head occupies the same position as any part of its body */

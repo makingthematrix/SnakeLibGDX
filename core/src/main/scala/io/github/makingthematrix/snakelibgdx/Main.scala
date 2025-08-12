@@ -2,6 +2,8 @@ package io.github.makingthematrix.snakelibgdx
 
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.scenes.scene2d.{Stage, Actor}
 import com.badlogic.gdx.scenes.scene2d.ui.{Dialog, Skin, TextButton, Label}
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
@@ -18,15 +20,44 @@ final class Main extends ApplicationAdapter:
   )
 
   private var lastUpdateTime: Float = 0f
-  private val updateInterval: Float = 1f // 1 second
+  private val updateInterval: Float = 0.5f
   private var gameRunning: Boolean = true
 
-  private val newCoinInterval: Float = 10f // 10 seconds
+  private val newCoinInterval: Float = 5f
   private var lastCoinSpawnTime: Float = 0f
 
   private lazy val stage: Stage = new Stage(new ScreenViewport())
   private lazy val skin: Skin = new Skin(Gdx.files.internal("ui/uiskin.json"))
   private var showingDialog: Boolean = false
+
+  // Custom InputProcessor for handling game input
+  private val gameInputProcessor = new InputProcessor {
+    override def keyDown(keycode: Int): Boolean = false
+
+    override def keyUp(keycode: Int): Boolean = {
+      import com.badlogic.gdx.Input.Keys.*
+      if gameRunning && !showingDialog then
+        val currentDirection = board.snake.snakeDir
+        keycode match
+          case LEFT =>
+            board.updateSnakeDirection(currentDirection.rotateCounterClockwise)
+            true
+          case RIGHT =>
+            board.updateSnakeDirection(currentDirection.rotateClockwise)
+            true
+          case _ => false
+      else
+        false
+    }
+
+    override def keyTyped(character: Char): Boolean = false
+    override def touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean = false
+    override def touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean = false
+    override def touchCancelled(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean = false
+    override def touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean = false
+    override def mouseMoved(screenX: Int, screenY: Int): Boolean = false
+    override def scrolled(amountX: Float, amountY: Float): Boolean = false
+  }
 
   override def create(): Unit =
     Draw.init()
@@ -34,35 +65,35 @@ final class Main extends ApplicationAdapter:
     // Initialize UI components
     stage
     skin
-    Gdx.input.setInputProcessor(stage)
+
+    // Set up input multiplexer to handle both game input and UI input
+    val inputMultiplexer = new InputMultiplexer()
+    inputMultiplexer.addProcessor(stage) // UI input (dialogs) takes priority
+    inputMultiplexer.addProcessor(gameInputProcessor) // Game input (LEFT/RIGHT keys)
+    Gdx.input.setInputProcessor(inputMultiplexer)
 
   override def render(): Unit =
     if gameRunning && !showingDialog then
       // Always render the current board state
       Draw.render(board)
 
-      // Check if any key is pressed
-      if Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.ANY_KEY) then
-        handleKeyPress()
+      // Update timing
+      val currentTime = Gdx.graphics.getDeltaTime
+      lastUpdateTime += currentTime
+      lastCoinSpawnTime += currentTime
 
-      else
-        // Update timing
-        val currentTime = Gdx.graphics.getDeltaTime
-        lastUpdateTime += currentTime
-        lastCoinSpawnTime += currentTime
+      // If 1 second has passed, update the board
+      if lastUpdateTime >= updateInterval then
+        board.update()
+        // Check for self-collision after board update
+        if board.hasSnakeSelfCollision then
+          showScoreDialog()
+        lastUpdateTime = 0f
 
-        // If 1 second has passed, update the board
-        if lastUpdateTime >= updateInterval then
-          board.update()
-          // Check for self-collision after board update
-          if board.hasSnakeSelfCollision then
-            showScoreDialog()
-          lastUpdateTime = 0f
-
-        // If coin spawn interval has passed and we haven't reached MAX_COINS, spawn a new coin
-        if lastCoinSpawnTime >= newCoinInterval && board.coinsNumber < Main.MAX_COINS then
-          spawnNewCoin()
-          lastCoinSpawnTime = 0f
+      // If coin spawn interval has passed and we haven't reached MAX_COINS, spawn a new coin
+      if lastCoinSpawnTime >= newCoinInterval && board.coinsNumber < Main.MAX_COINS then
+        spawnNewCoin()
+        lastCoinSpawnTime = 0f
 
     else if showingDialog then
       // Render the game board in background
@@ -111,12 +142,6 @@ final class Main extends ApplicationAdapter:
     // Show the dialog
     dialog.show(stage)
 
-  private def handleKeyPress(): Unit =
-    import com.badlogic.gdx.Input.Keys.*
-    if Gdx.input.isKeyPressed(LEFT) then board.updateSnakeDirection(SnakeDir.Left)
-    else if Gdx.input.isKeyPressed(RIGHT) then board.updateSnakeDirection(SnakeDir.Right)
-    else if Gdx.input.isKeyPressed(UP) then board.updateSnakeDirection(SnakeDir.Up)
-    else if Gdx.input.isKeyPressed(DOWN) then board.updateSnakeDirection(SnakeDir.Down)
 
 object Main:
   val BOARD_SIZE: Int = 8

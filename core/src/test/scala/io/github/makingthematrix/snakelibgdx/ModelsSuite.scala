@@ -75,6 +75,43 @@ class ModelsSuite extends FunSuite:
     assert(result.isEmpty, "Sequence with backward jump should be rejected")
   }
 
+  // SnakeDir rotation tests
+  test("SnakeDir rotateClockwise should rotate correctly") {
+    assertEquals(SnakeDir.Up.rotateClockwise, SnakeDir.Right, "Up should rotate clockwise to Right")
+    assertEquals(SnakeDir.Right.rotateClockwise, SnakeDir.Down, "Right should rotate clockwise to Down")
+    assertEquals(SnakeDir.Down.rotateClockwise, SnakeDir.Left, "Down should rotate clockwise to Left")
+    assertEquals(SnakeDir.Left.rotateClockwise, SnakeDir.Up, "Left should rotate clockwise to Up")
+  }
+
+  test("SnakeDir rotateCounterClockwise should rotate correctly") {
+    assertEquals(SnakeDir.Up.rotateCounterClockwise, SnakeDir.Left, "Up should rotate counter-clockwise to Left")
+    assertEquals(SnakeDir.Left.rotateCounterClockwise, SnakeDir.Down, "Left should rotate counter-clockwise to Down")
+    assertEquals(SnakeDir.Down.rotateCounterClockwise, SnakeDir.Right, "Down should rotate counter-clockwise to Right")
+    assertEquals(SnakeDir.Right.rotateCounterClockwise, SnakeDir.Up, "Right should rotate counter-clockwise to Up")
+  }
+
+  test("SnakeDir rotation should be reversible") {
+    // Test that clockwise and counter-clockwise rotations are inverse operations
+    assertEquals(SnakeDir.Up.rotateClockwise.rotateCounterClockwise, SnakeDir.Up, "Clockwise then counter-clockwise should return to original")
+    assertEquals(SnakeDir.Right.rotateClockwise.rotateCounterClockwise, SnakeDir.Right, "Clockwise then counter-clockwise should return to original")
+    assertEquals(SnakeDir.Down.rotateClockwise.rotateCounterClockwise, SnakeDir.Down, "Clockwise then counter-clockwise should return to original")
+    assertEquals(SnakeDir.Left.rotateClockwise.rotateCounterClockwise, SnakeDir.Left, "Clockwise then counter-clockwise should return to original")
+  }
+
+  test("SnakeDir four clockwise rotations should return to original direction") {
+    assertEquals(SnakeDir.Up.rotateClockwise.rotateClockwise.rotateClockwise.rotateClockwise, SnakeDir.Up, "Four clockwise rotations should return to original")
+    assertEquals(SnakeDir.Right.rotateClockwise.rotateClockwise.rotateClockwise.rotateClockwise, SnakeDir.Right, "Four clockwise rotations should return to original")
+    assertEquals(SnakeDir.Down.rotateClockwise.rotateClockwise.rotateClockwise.rotateClockwise, SnakeDir.Down, "Four clockwise rotations should return to original")
+    assertEquals(SnakeDir.Left.rotateClockwise.rotateClockwise.rotateClockwise.rotateClockwise, SnakeDir.Left, "Four clockwise rotations should return to original")
+  }
+
+  test("SnakeDir four counter-clockwise rotations should return to original direction") {
+    assertEquals(SnakeDir.Up.rotateCounterClockwise.rotateCounterClockwise.rotateCounterClockwise.rotateCounterClockwise, SnakeDir.Up, "Four counter-clockwise rotations should return to original")
+    assertEquals(SnakeDir.Right.rotateCounterClockwise.rotateCounterClockwise.rotateCounterClockwise.rotateCounterClockwise, SnakeDir.Right, "Four counter-clockwise rotations should return to original")
+    assertEquals(SnakeDir.Down.rotateCounterClockwise.rotateCounterClockwise.rotateCounterClockwise.rotateCounterClockwise, SnakeDir.Down, "Four counter-clockwise rotations should return to original")
+    assertEquals(SnakeDir.Left.rotateCounterClockwise.rotateCounterClockwise.rotateCounterClockwise.rotateCounterClockwise, SnakeDir.Left, "Four counter-clockwise rotations should return to original")
+  }
+
   // Snake.changeDirection tests
   test("changeDirection should update snake direction") {
     val snake = Snake.apply(List((1, 1), (2, 1))).get
