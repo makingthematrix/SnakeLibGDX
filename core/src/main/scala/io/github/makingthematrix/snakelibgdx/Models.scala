@@ -1,9 +1,9 @@
 package io.github.makingthematrix.snakelibgdx
 
 enum SnakeDir (val x: Int, val y: Int):
-  case Up extends SnakeDir(0, -1)
+  case Up extends SnakeDir(0, 1)
   case Right extends SnakeDir(1, 0)
-  case Down extends SnakeDir(0, 1)
+  case Down extends SnakeDir(0, -1)
   case Left extends SnakeDir(-1, 0)
 
 final class Snake(body: List[(x: Int, y: Int)], snakeDir: SnakeDir):

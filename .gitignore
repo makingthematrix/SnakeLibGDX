@@ -39,3 +39,8 @@
 *.bsp
 *.gradle/*
 *.tasty
+*/tmp/*
+*_tmp*
+*.bin
+*.lock
+*.jar

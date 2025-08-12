@@ -102,7 +102,7 @@ object Draw:
 
   private def colorTile(pos: (x: Int, y: Int)): Unit =
     val isoX = start.x + (pos.x - pos.y) * TILE_WIDTH / 2f + Main.BOARD_SIZE * TILE_WIDTH / 2f
-    val isoY = start.y + (pos.x + pos.y - 2f) * TILE_HEIGHT / 2f
+    val isoY = start.y + (pos.x + pos.y) * TILE_HEIGHT / 2f
     // Draw the isometric tile (diamond shape)
     shapeRenderer.triangle(
       isoX, isoY + TILE_HEIGHT / 2f,
@@ -130,7 +130,7 @@ object Draw:
   private def drawTexture(texture: Texture, pos: (x: Int, y: Int)): Unit =
     // Calculate isometric coordinates for the pawn
     val tokenIsoX = start.x + (pos.x - pos.y) * TILE_WIDTH / 2f + Main.BOARD_SIZE * TILE_WIDTH / 2f
-    val tokenIsoY = start.y + (pos.x + pos.y - 1f) * TILE_HEIGHT / 2f
+    val tokenIsoY = start.y + (pos.x + pos.y + 1f) * TILE_HEIGHT / 2f
     // Adjust the pawn position to center it on the tile
     val tokenX = tokenIsoX + (1.5f * TILE_WIDTH - SQUARE_SIZE) / 2f
     val tokenY = tokenIsoY - SQUARE_SIZE / 4f// Adjust to position pawn on the tile
