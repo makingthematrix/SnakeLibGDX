@@ -11,62 +11,20 @@ enum SnakeDir (val x: Int, val y: Int):
       case (Up, Down) | (Down, Up) | (Left, Right) | (Right, Left) => true
       case _ => false
 
-final class Snake(val body: List[(x: Int, y: Int)], val snakeDir: SnakeDir, val hasCoin: Boolean = false):
-  /** Returns true if the snake's head occupies the same position as any part of its body */
-  def hasSelfCollision: Boolean = body match
-    case head :: tail => tail.contains(head)
-    case _ => false
-
-  def addCoin: Snake = new Snake(body, snakeDir, true)
-  def setHasCoin(newHasCoin: Boolean): Snake = new Snake(body, snakeDir, newHasCoin)
-
-  def changeDirection(newDir: SnakeDir): Snake = new Snake(body, newDir, hasCoin)
+final class Snake(val body: List[(x: Int, y: Int)], val snakeDir: SnakeDir):
+  def changeDirection(newDir: SnakeDir): Snake = new Snake(body, newDir)
 
   def crawl: Snake = body match
     case Nil =>
-      // Empty body - create new head at (0,0) moved by snakeDir with wrapping
-      val newHead = wrapCoordinate(snakeDir.x, snakeDir.y)
-      new Snake(List(newHead), snakeDir, false) // hasCoin always false for new snake
-    case head :: Nil =>
-      // Single element - new head is current head moved by snakeDir with wrapping
-      val newHead = wrapCoordinate(head.x + snakeDir.x, head.y + snakeDir.y)
-      new Snake(List(newHead), snakeDir, false) // hasCoin always false for single element
-    case head :: tail =>
-      // Multiple elements - check hasCoin to determine if we grow or move normally
-      val newHead = wrapCoordinate(head.x + snakeDir.x, head.y + snakeDir.y)
-      if hasCoin then
-        // Snake has coin - grow by not removing tail, set hasCoin to false
-        val newBody = newHead :: body
-        new Snake(newBody, snakeDir, false)
-      else
-        // Normal movement - remove last, add new head with wrapping
-        val newBody = newHead :: body.init // init removes the last element
-        new Snake(newBody, snakeDir, false)
-
-
-  private def wrapCoordinate(x: Int, y: Int): (Int, Int) =
-    val wrappedX = if x == -1 then Main.BOARD_SIZE - 1 else if x == Main.BOARD_SIZE then 0 else x
-    val wrappedY = if y == -1 then Main.BOARD_SIZE - 1 else if y == Main.BOARD_SIZE then 0 else y
-    (wrappedX, wrappedY)
+      this // Nothing to crawl, just return the same snake
+    case head :: _ =>
+      val newHead = (head.x + snakeDir.x, head.y + snakeDir.y)
+      val newBody = newHead :: body.init // init removes the last element
+      new Snake(newBody, snakeDir)
 
 object Snake:
-  def apply(): Snake = new Snake(Nil, SnakeDir.Right, false)
-
-  def apply(body: List[(x: Int, y: Int)], snakeDir: SnakeDir = SnakeDir.Right): Option[Snake] =
-    if isContinuous(body) then
-      // For now, default direction is Right - this could be enhanced to detect direction from body
-      Some(new Snake(body, snakeDir, false))
-    else
-      None
-
-  private def isContinuous(body: List[(x: Int, y: Int)]): Boolean =
-    body match
-      case Nil => true // Empty list is considered continuous
-      case _ :: Nil => true // Single element is continuous
-      case _ =>
-        body.zip(body.tail).forall { case ((x1, y1), (x2, y2)) =>
-          math.abs(x2 - x1) + math.abs(y2 - y1) == 1
-        }
+  def apply(): Snake = new Snake(Nil, SnakeDir.Right)
+  def apply(body: List[(x: Int, y: Int)]): Snake = new Snake(body, SnakeDir.Right)
 
 final class Board(val size: Int, private var coins: List[(x: Int, y: Int)] = Nil, private var _snake: Snake = Snake()):
   def coinsPositions: List[(x: Int, y: Int)] = coins
@@ -79,21 +37,14 @@ final class Board(val size: Int, private var coins: List[(x: Int, y: Int)] = Nil
     _snake = newSnake
 
   def update(): Unit =
-    // First crawl the snake to new position
     _snake = _snake.crawl
-    // Then check if the new snake head is on a coin position
-    _snake.body.headOption.foreach { head =>
-      if coins.contains(head) then
-        _snake = _snake.addCoin
-        coins = coins.filterNot(_ == head)
-    }
+
+  private lazy val allPositions = for
+    x <- 0 until size
+    y <- 0 until size
+  yield (x, y)
 
   def getEmptyTilePositions: List[(Int, Int)] =
-    val allPositions = for
-      x <- 0 until size
-      y <- 0 until size
-    yield (x, y)
-
     val occupiedPositions = _snake.body.toSet ++ coins.toSet
     allPositions.filterNot(occupiedPositions.contains).toList
 
@@ -107,9 +58,6 @@ final class Board(val size: Int, private var coins: List[(x: Int, y: Int)] = Nil
       true
     else
       false
-
-  def hasSnakeSelfCollision: Boolean = _snake.hasSelfCollision
-
 
 object Board:
   def apply(size: Int): Board = new Board(size)
