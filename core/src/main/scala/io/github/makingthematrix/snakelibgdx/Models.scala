@@ -29,10 +29,10 @@ final class Snake(val body: List[(x: Int, y: Int)], val snakeDir: SnakeDir, val 
     case head :: tail => tail.contains(head)
     case _ => false
 
-  def addCoin: Snake = new Snake(body, snakeDir, true)
-  def setHasCoin(newHasCoin: Boolean): Snake = new Snake(body, snakeDir, newHasCoin)
+  inline def addCoin: Snake = new Snake(body, snakeDir, true)
+  inline def setHasCoin(newHasCoin: Boolean): Snake = new Snake(body, snakeDir, newHasCoin)
 
-  def changeDirection(newDir: SnakeDir): Snake = new Snake(body, newDir, hasCoin)
+  inline def changeDirection(newDir: SnakeDir): Snake = new Snake(body, newDir, hasCoin)
 
   def crawl: Snake = body match
     case Nil =>
@@ -54,7 +54,6 @@ final class Snake(val body: List[(x: Int, y: Int)], val snakeDir: SnakeDir, val 
         // Normal movement - remove last, add new head with wrapping
         val newBody = newHead :: body.init // init removes the last element
         new Snake(newBody, snakeDir, false)
-
 
   private def wrapCoordinate(x: Int, y: Int): (Int, Int) =
     val wrappedX = if x == -1 then Main.BOARD_SIZE - 1 else if x == Main.BOARD_SIZE then 0 else x
@@ -81,11 +80,11 @@ object Snake:
         }
 
 final class Board(val size: Int, private var coins: List[(x: Int, y: Int)] = Nil, private var _snake: Snake = Snake()):
-  def coinsPositions: List[(x: Int, y: Int)] = coins
-  def snake: Snake = _snake
+  inline def coinsPositions: List[(x: Int, y: Int)] = coins
+  inline def snake: Snake = _snake
 
-  def coinsNumber: Int = coins.size
-  def snakeLength: Int = _snake.body.size
+  inline def coinsNumber: Int = coins.size
+  inline def snakeLength: Int = _snake.body.size
 
   def updateSnake(newSnake: Snake): Unit =
     _snake = newSnake
@@ -120,11 +119,10 @@ final class Board(val size: Int, private var coins: List[(x: Int, y: Int)] = Nil
     else
       false
 
-  def hasSnakeSelfCollision: Boolean = _snake.hasSelfCollision
-
+  inline def hasSnakeSelfCollision: Boolean = _snake.hasSelfCollision
 
 object Board:
   def apply(size: Int): Board = new Board(size)
   def apply(size: Int, coins: List[(x: Int, y: Int)]): Board = new Board(size, coins)
   def apply(size: Int, coins: List[(x: Int, y: Int)], snake: Snake): Board = new Board(size, coins, snake)
-  def apply(size: Int, snake: Snake): Board = new Board(size, Nil, snake)
+
