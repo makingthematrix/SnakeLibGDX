@@ -12,7 +12,7 @@ object Draw:
   private val SQUARE_SIZE = 80f // Size of each square in pixels
   private val TILE_WIDTH = SQUARE_SIZE // Width of an isometric tile
   private val TILE_HEIGHT = SQUARE_SIZE / 2 // Height of isometric tile (half of width for 2:1 ratio)
-  private val coinTexture = new Texture(Paths.get("coins.png").toString)
+  private val coinTexture = new Texture(Paths.get("scala_80px.png").toString)
   private val darkGreen = new Color(0, 0.6f, 0, 1)
 
   private lazy val graphicsWH: (w: Int, h: Int) = (w = Gdx.graphics.getWidth, h = Gdx.graphics.getHeight)
