@@ -23,7 +23,11 @@
 <tr>
 <td>
 <div class="infoBox" id="tests">
+<<<<<<< Updated upstream
 <div class="counter">16</div>
+=======
+<div class="counter">94</div>
+>>>>>>> Stashed changes
 <p>tests</p>
 </div>
 </td>
@@ -41,7 +45,11 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
+<<<<<<< Updated upstream
 <div class="counter">0.039s</div>
+=======
+<div class="counter">0.056s</div>
+>>>>>>> Stashed changes
 <p>duration</p>
 </div>
 </td>
@@ -75,6 +83,7 @@
 </tr>
 </thead>
 <tr>
+<<<<<<< Updated upstream
 <td class="success">Board addCoin should add coin to empty position</td>
 <td class="success">0s</td>
 <td class="success">passed</td>
@@ -82,6 +91,10 @@
 <tr>
 <td class="success">Board addCoin should not add coin to position with existing coin</td>
 <td class="success">0.001s</td>
+=======
+<td class="success">Board companion object apply should create board with empty coins</td>
+<td class="success">0s</td>
+>>>>>>> Stashed changes
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -105,8 +118,13 @@
 <td class="success">passed</td>
 </tr>
 <tr>
+<<<<<<< Updated upstream
 <td class="success">Board getEmptyTilePositions should exclude both snake and coin positions</td>
 <td class="success">0.002s</td>
+=======
+<td class="success">Board should be created with size and coins</td>
+<td class="success">0.001s</td>
+>>>>>>> Stashed changes
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -145,8 +163,163 @@
 <td class="success">passed</td>
 </tr>
 <tr>
+<td class="success">Board.addCoin should add coin to empty position</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.addCoin should not add coin on snake position</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.addCoin should not add duplicate coins</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.addCoin should work with multiple coins</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.changeSnakeDirection should handle all backwards combinations correctly</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.changeSnakeDirection should preserve snake body</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.changeSnakeDirection should return false and block Down to Up direction change</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.changeSnakeDirection should return false and block Left to Right direction change</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.changeSnakeDirection should return false and block Right to Left direction change</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.changeSnakeDirection should return false and block Up to Down direction change</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.changeSnakeDirection should return true for valid direction changes</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.changeSnakeDirection should return true when changing to same direction</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.changeSnakeDirection should update snake direction to Down</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.changeSnakeDirection should update snake direction to Left</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.changeSnakeDirection should update snake direction to Right</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.changeSnakeDirection should update snake direction to Up</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.changeSnakeDirection should work with all directions</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.coinsNumber should return 0 for empty coin list</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.coinsNumber should return correct count for multiple coins</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.coinsNumber should update when coins are removed</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
 <td class="success">Board.coinsPositions should return the coins list</td>
 <td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.getEmptyTiles should exclude both snake and coin positions</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.getEmptyTiles should exclude coin positions</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.getEmptyTiles should exclude snake positions</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.getEmptyTiles should return all positions when board is empty</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.getEmptyTiles should return empty list when board is full</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.hasSnakeSelfCollision should delegate to snake collision check</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.hasSnakeSelfCollision should return false for snake without collision</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.hasSnakeSelfCollision should return true for snake with collision</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.update should grow snake when collecting multiple coins</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.update should set hasCoin to true when snake reaches coin</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Board.updateSnake should replace the snake instance</td>
+<td class="success">0s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -154,6 +327,289 @@
 <td class="success">0.001s</td>
 <td class="success">passed</td>
 </tr>
+<<<<<<< Updated upstream
+=======
+<tr>
+<td class="success">Snake changeDirection should preserve hasCoin value</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake crawl should grow when hasCoin is true</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake crawl should not grow when hasCoin is false</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake crawl with empty body and hasCoin true should work correctly</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake crawl with single element and hasCoin true should grow correctly</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake getHasCoin should return correct value</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake setHasCoin should create new instance with updated hasCoin value</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake setHasCoin should work in both directions</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake should have hasCoin false by default</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.apply should create snake for continuous horizontal sequence</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.apply should create snake for continuous vertical sequence</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.apply should create snake for empty body list</td>
+<td class="success">0.016s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.apply should create snake for mixed continuous sequence</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.apply should create snake for single element body</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.apply should handle negative coordinates correctly</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.apply should reject diagonal sequence</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.apply should reject discontinuous horizontal sequence</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.apply should reject discontinuous vertical sequence</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.apply should reject sequence with backward jump</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.apply should reject sequence with large gaps</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.apply should validate continuity for L-shaped snake</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.hasSelfCollision should handle complex collision scenarios</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.hasSelfCollision should return false for empty snake</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.hasSelfCollision should return false for multi-element snake without collision</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.hasSelfCollision should return false for single element snake</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.hasSelfCollision should return false for two element snake without collision</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.hasSelfCollision should return false for valid L-shaped snake</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.hasSelfCollision should return true when head collides with any tail segment</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.hasSelfCollision should return true when head collides with immediate tail segment</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Snake.hasSelfCollision should return true when head collides with last tail segment</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">changeDirection should preserve snake body</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">changeDirection should update snake direction</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">changeDirection should work with all directions</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should handle corner wrapping - top-left to bottom-right</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should handle empty snake body</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should handle single element snake</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should move snake head forward and remove tail</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should not wrap when moving within board boundaries</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should preserve snake length for multi-element snake</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should preserve snake size</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should wrap down from y=7 to y=0</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should wrap left from x=0 to x=7</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should wrap right from x=7 to x=0</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should wrap up from y=0 to y=7</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should wrap with multi-element snake from bottom boundary</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should wrap with multi-element snake from left boundary</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should wrap with multi-element snake from right boundary</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl should wrap with multi-element snake from top boundary</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl with Right direction should have correct body structure</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">crawl with different directions should move head correctly</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">multiple crawl operations should work correctly</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">rotateClockwise should work correctly for all directions</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">rotateCounterClockwise should work correctly for all directions</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">rotation should work with actual snake movement</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">rotation-based control should allow full clockwise cycle</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">rotation-based control should allow full counter-clockwise cycle</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+>>>>>>> Stashed changes
 </table>
 </div>
 </div>
@@ -164,7 +620,11 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
+<<<<<<< Updated upstream
 <a href="https://www.gradle.org">Gradle 8.14.1</a> at Aug 13, 2025, 11:41:10 AM</p>
+=======
+<a href="https://www.gradle.org">Gradle 8.14.1</a> at Aug 14, 2025, 1:32:41 PM</p>
+>>>>>>> Stashed changes
 </div>
 </div>
 </body>

@@ -1,5 +1,7 @@
 coins.png
 libgdx.png
+scala.png
+scala_80px.png
 ui/font-list.fnt
 ui/font-subtitle.fnt
 ui/font-window.fnt

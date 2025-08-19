@@ -1,13 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< Updated upstream
 <testsuite name="io.github.makingthematrix.snakelibgdx.ModelsSuite" tests="16" skipped="0" failures="0" errors="0" timestamp="2025-08-13T09:41:10.595Z" hostname="PL-UNIT-0078" time="0.041">
   <properties/>
   <testcase name="Board should be created with size and coins" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.019"/>
   <testcase name="Board.coinsPositions should return the coins list" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+=======
+<testsuite name="io.github.makingthematrix.snakelibgdx.ModelsSuite" tests="94" skipped="0" failures="0" errors="0" timestamp="2025-08-14T11:32:41.038Z" hostname="PL-UNIT-0078" time="0.058">
+  <properties/>
+  <testcase name="Snake.apply should create snake for empty body list" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.016"/>
+  <testcase name="Snake.apply should create snake for single element body" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.apply should create snake for continuous horizontal sequence" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.apply should create snake for continuous vertical sequence" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.apply should create snake for mixed continuous sequence" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.apply should reject discontinuous horizontal sequence" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.apply should reject discontinuous vertical sequence" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.apply should reject diagonal sequence" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.apply should reject sequence with large gaps" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.apply should handle negative coordinates correctly" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Snake.apply should validate continuity for L-shaped snake" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.apply should reject sequence with backward jump" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="changeDirection should update snake direction" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="changeDirection should preserve snake body" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="changeDirection should work with all directions" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="crawl should move snake head forward and remove tail" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="crawl should handle single element snake" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="crawl should handle empty snake body" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="crawl with different directions should move head correctly" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="crawl should preserve snake length for multi-element snake" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="multiple crawl operations should work correctly" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="crawl should preserve snake size" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="crawl with Right direction should have correct body structure" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="crawl should wrap left from x=0 to x=7" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="crawl should wrap up from y=0 to y=7" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="crawl should wrap right from x=7 to x=0" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="crawl should wrap down from y=7 to y=0" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="crawl should not wrap when moving within board boundaries" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="crawl should wrap with multi-element snake from left boundary" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="crawl should wrap with multi-element snake from right boundary" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="crawl should wrap with multi-element snake from top boundary" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="crawl should wrap with multi-element snake from bottom boundary" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="crawl should handle corner wrapping - top-left to bottom-right" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board should be created with size and coins" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Board.coinsPositions should return the coins list" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+>>>>>>> Stashed changes
   <testcase name="Board should handle empty coins list" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
   <testcase name="Board companion object apply should create board with empty coins" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
   <testcase name="Board companion object apply should work with different sizes" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
   <testcase name="Board should handle zero size" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
   <testcase name="Multiple boards should be independent" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+<<<<<<< Updated upstream
   <testcase name="Board getEmptyTilePositions should return all positions when board is empty" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.004"/>
   <testcase name="Board getEmptyTilePositions should exclude snake body positions" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.003"/>
   <testcase name="Board getEmptyTilePositions should exclude coin positions" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.002"/>
@@ -17,6 +58,62 @@
   <testcase name="Board addCoin should not add coin to position with existing coin" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
   <testcase name="Board addCoin should not add coin to position with snake body" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
   <testcase name="Board addCoin should successfully add multiple coins to different positions" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.002"/>
+=======
+  <testcase name="Board.changeSnakeDirection should update snake direction to Left" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.changeSnakeDirection should update snake direction to Right" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.changeSnakeDirection should update snake direction to Up" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.changeSnakeDirection should update snake direction to Down" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Board.changeSnakeDirection should work with all directions" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.changeSnakeDirection should preserve snake body" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Board.changeSnakeDirection should return false and block Up to Down direction change" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.changeSnakeDirection should return false and block Down to Up direction change" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.changeSnakeDirection should return false and block Left to Right direction change" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Board.changeSnakeDirection should return false and block Right to Left direction change" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.changeSnakeDirection should return true for valid direction changes" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.changeSnakeDirection should return true when changing to same direction" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.changeSnakeDirection should handle all backwards combinations correctly" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Snake should have hasCoin false by default" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake getHasCoin should return correct value" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake setHasCoin should create new instance with updated hasCoin value" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Snake setHasCoin should work in both directions" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake changeDirection should preserve hasCoin value" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Snake crawl should grow when hasCoin is true" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake crawl should not grow when hasCoin is false" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Board.update should set hasCoin to true when snake reaches coin" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.update should grow snake when collecting multiple coins" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Board.updateSnake should replace the snake instance" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake crawl with single element and hasCoin true should grow correctly" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Snake crawl with empty body and hasCoin true should work correctly" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Board.getEmptyTiles should return all positions when board is empty" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.005"/>
+  <testcase name="Board.getEmptyTiles should exclude snake positions" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.003"/>
+  <testcase name="Board.getEmptyTiles should exclude coin positions" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.002"/>
+  <testcase name="Board.getEmptyTiles should exclude both snake and coin positions" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Board.getEmptyTiles should return empty list when board is full" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.coinsNumber should return 0 for empty coin list" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.coinsNumber should return correct count for multiple coins" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Board.coinsNumber should update when coins are removed" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.addCoin should add coin to empty position" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.addCoin should not add duplicate coins" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.addCoin should not add coin on snake position" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Board.addCoin should work with multiple coins" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.hasSelfCollision should return false for empty snake" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Snake.hasSelfCollision should return false for single element snake" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.hasSelfCollision should return false for two element snake without collision" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.hasSelfCollision should return false for multi-element snake without collision" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.hasSelfCollision should return true when head collides with immediate tail segment" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.hasSelfCollision should return true when head collides with any tail segment" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.hasSelfCollision should return true when head collides with last tail segment" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.hasSelfCollision should handle complex collision scenarios" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Snake.hasSelfCollision should return false for valid L-shaped snake" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="Board.hasSnakeSelfCollision should return false for snake without collision" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.hasSnakeSelfCollision should return true for snake with collision" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="Board.hasSnakeSelfCollision should delegate to snake collision check" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="rotateClockwise should work correctly for all directions" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="rotateCounterClockwise should work correctly for all directions" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="rotation-based control should allow full clockwise cycle" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+  <testcase name="rotation-based control should allow full counter-clockwise cycle" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.001"/>
+  <testcase name="rotation should work with actual snake movement" classname="io.github.makingthematrix.snakelibgdx.ModelsSuite" time="0.0"/>
+>>>>>>> Stashed changes
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
