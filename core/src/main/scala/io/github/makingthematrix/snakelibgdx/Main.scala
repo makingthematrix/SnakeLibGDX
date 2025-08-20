@@ -1,13 +1,11 @@
 package io.github.makingthematrix.snakelibgdx
 
-import com.badlogic.gdx.ApplicationAdapter
-import com.badlogic.gdx.Gdx
-import io.github.makingthematrix.snakelibgdx.Main.BOARD_SIZE
 import com.badlogic.gdx.{ApplicationAdapter, Gdx, InputProcessor}
 import com.badlogic.gdx.scenes.scene2d.ui.{Dialog, Label, Skin, TextButton}
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.{InputEvent, Stage}
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import io.github.makingthematrix.snakelibgdx.Main.BOARD_SIZE
 
 import scala.util.Random
 
@@ -19,7 +17,9 @@ final class Main extends ApplicationAdapter:
   )
 
   private var lastUpdateTime: Float = 0f
-  private val updateInterval: Float = 0.5f // 1 second
+  private val updateInterval: Float = 0.5f
+  private val newCoinInterval: Float = 5f
+  private var lastCoinSpawnTime: Float = 0f
 
   // Game state management
   private enum GameState:
@@ -31,8 +31,6 @@ final class Main extends ApplicationAdapter:
   private lazy val stage: Stage = new Stage(new ScreenViewport())
   private lazy val skin: Skin = new Skin(Gdx.files.internal("ui/uiskin.json"))
   private var scoreDialog: Dialog = null
-  private val newCoinInterval: Float = 5f // 5 seconds
-  private var lastCoinSpawnTime: Float = 0f
 
   // Custom InputProcessor to handle key input
   private class GameInputProcessor extends InputProcessor:
@@ -59,13 +57,12 @@ final class Main extends ApplicationAdapter:
       // Handle LEFT/RIGHT keys for snake rotation
       keycode match
         case com.badlogic.gdx.Input.Keys.LEFT =>
-          // LEFT key rotates counter-clockwise
-          val newDirection = rotateCounterClockwise(board.snake.snakeDir)
+          val newDirection = rotateClockwise(board.snake.snakeDir)
           board.changeSnakeDirection(newDirection)
           true
         case com.badlogic.gdx.Input.Keys.RIGHT =>
           // RIGHT key rotates clockwise
-          val newDirection = rotateClockwise(board.snake.snakeDir)
+          val newDirection = rotateCounterClockwise(board.snake.snakeDir)
           board.changeSnakeDirection(newDirection)
           true
         case _ =>
@@ -174,13 +171,6 @@ final class Main extends ApplicationAdapter:
     selectRandomPosition(emptyPositions) match
       case Some(position) => board.addCoin(position)
       case None => // No empty positions available, do nothing
-
-  private def handleKeyPress(): Unit =
-    import com.badlogic.gdx.Input.Keys.*
-    if Gdx.input.isKeyPressed(LEFT) then board.updateSnakeDirection(SnakeDir.Left)
-    else if Gdx.input.isKeyPressed(RIGHT) then board.updateSnakeDirection(SnakeDir.Right)
-    else if Gdx.input.isKeyPressed(UP) then board.updateSnakeDirection(SnakeDir.Up)
-    else if Gdx.input.isKeyPressed(DOWN) then board.updateSnakeDirection(SnakeDir.Down)
 
 object Main:
   val BOARD_SIZE: Int = 8
