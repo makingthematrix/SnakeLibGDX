@@ -13,10 +13,10 @@ final class Main extends ApplicationAdapter:
   )
 
   private var lastUpdateTime: Float = 0f
-  private val updateInterval: Float = 1f // 1 second
+  private val updateInterval: Float = 0.5f
   private var gameRunning: Boolean = true
 
-  private val newCoinInterval: Float = 10f // 10 seconds
+  private val newCoinInterval: Float = 5f
   private var lastCoinSpawnTime: Float = 0f
 
   override def create(): Unit =
