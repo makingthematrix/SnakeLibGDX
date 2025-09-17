@@ -3,23 +3,6 @@ package io.github.makingthematrix.snakelibgdx
 import munit.FunSuite
 
 class ModelsSuite extends FunSuite {
-  def rotateClockwise(currentDir: Dir2D): Dir2D =
-    currentDir match {
-      case Dir2D.Up => Dir2D.Right
-      case Dir2D.Right => Dir2D.Down
-      case Dir2D.Down => Dir2D.Left
-      case Dir2D.Left => Dir2D.Up
-    }
-
-  // Simulate the rotateCounterClockwise logic from Main.scala
-  def rotateCounterClockwise(currentDir: Dir2D): Dir2D =
-    currentDir match {
-      case Dir2D.Up => Dir2D.Left
-      case Dir2D.Left => Dir2D.Down
-      case Dir2D.Down => Dir2D.Right
-      case Dir2D.Right => Dir2D.Up
-    }
-
   // Snake.apply tests for continuity validation
   test("Snake.apply should create snake for empty body list") {
     val result = Snake(List.empty)
@@ -967,21 +950,6 @@ class ModelsSuite extends FunSuite {
 
     // Should now return true
     assertEquals(board.hasSnakeSelfCollision, true, "Board should return true after updating to colliding snake")
-  }
-
-  // Tests for rotation-based direction control (simulating the Main.scala rotation logic)
-  test("rotateClockwise should work correctly for all directions") {
-    assertEquals(rotateClockwise(Dir2D.Up), Dir2D.Right, "Up should rotate clockwise to Right")
-    assertEquals(rotateClockwise(Dir2D.Right), Dir2D.Down, "Right should rotate clockwise to Down")
-    assertEquals(rotateClockwise(Dir2D.Down), Dir2D.Left, "Down should rotate clockwise to Left")
-    assertEquals(rotateClockwise(Dir2D.Left), Dir2D.Up, "Left should rotate clockwise to Up")
-  }
-
-  test("rotateCounterClockwise should work correctly for all directions") {
-    assertEquals(rotateCounterClockwise(Dir2D.Up), Dir2D.Left, "Up should rotate counter-clockwise to Left")
-    assertEquals(rotateCounterClockwise(Dir2D.Left), Dir2D.Down, "Left should rotate counter-clockwise to Down")
-    assertEquals(rotateCounterClockwise(Dir2D.Down), Dir2D.Right, "Down should rotate counter-clockwise to Right")
-    assertEquals(rotateCounterClockwise(Dir2D.Right), Dir2D.Up, "Right should rotate counter-clockwise to Up")
   }
 
   test("rotation-based control should allow full clockwise cycle") {

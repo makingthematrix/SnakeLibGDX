@@ -1,7 +1,5 @@
 package io.github.makingthematrix.snakelibgdx
 
-
-
 final class Snake(val body: List[Pos2D], val snakeDir: Dir2D, val hasCoin: Boolean = false):
   def setHasCoin(value: Boolean): Snake = new Snake(body, snakeDir, value)
 
@@ -80,25 +78,13 @@ final class Board(val size: Int, private var coins: List[Pos2D] = Nil, private v
 
   def hasSnakeSelfCollision: Boolean = _snake.hasSelfCollision
 
-  def changeSnakeDirection(newDir: Dir2D): Boolean = {
-    // Get current direction from snake
-    val currentDir = _snake.snakeDir
-
+  def changeSnakeDirection(newDir: Dir2D): Boolean =
     // Check if the new direction is opposite to the current direction (backwards move)
-    val isOpposite = (currentDir, newDir) match {
-      case (Dir2D.Up, Dir2D.Down) => true
-      case (Dir2D.Down, Dir2D.Up) => true
-      case (Dir2D.Left, Dir2D.Right) => true
-      case (Dir2D.Right, Dir2D.Left) => true
-      case _ => false
-    }
-
-    if (isOpposite) false // Cannot change to opposite direction
+    if (_snake.snakeDir.opposite(newDir)) false // Cannot change to opposite direction
     else {
       _snake = _snake.changeDirection(newDir)
       true // Valid direction change succeeded
     }
-  }
 
   def updateSnake(newSnake: Snake): Unit =
     _snake = newSnake

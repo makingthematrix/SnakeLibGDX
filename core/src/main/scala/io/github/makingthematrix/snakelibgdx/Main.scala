@@ -39,24 +39,7 @@ final class Main extends ApplicationAdapter {
     }
 
   // Custom InputProcessor to handle key input
-  private class GameInputProcessor extends InputProcessor:
-
-    private def rotateClockwise(currentDir: Dir2D): Dir2D =
-      currentDir match {
-        case Dir2D.Up => Dir2D.Right
-        case Dir2D.Right => Dir2D.Down
-        case Dir2D.Down => Dir2D.Left
-        case Dir2D.Left => Dir2D.Up
-      }
-
-    private def rotateCounterClockwise(currentDir: Dir2D): Dir2D =
-      currentDir match {
-        case Dir2D.Up => Dir2D.Left
-        case Dir2D.Left => Dir2D.Down
-        case Dir2D.Down => Dir2D.Right
-        case Dir2D.Right => Dir2D.Up
-      }
-
+  private class GameInputProcessor extends InputProcessor{
     override def keyDown(keycode: Int): Boolean =
       // Delegate to stage first for UI handling
       stage.keyDown(keycode)
@@ -65,12 +48,12 @@ final class Main extends ApplicationAdapter {
       // Handle LEFT/RIGHT keys for snake rotation
       keycode match {
         case com.badlogic.gdx.Input.Keys.LEFT =>
-          val newDirection = rotateClockwise(board.snake.snakeDir)
+          val newDirection = board.snake.snakeDir.rotateClockwise
           board.changeSnakeDirection(newDirection)
           true
         case com.badlogic.gdx.Input.Keys.RIGHT =>
           // RIGHT key rotates clockwise
-          val newDirection = rotateCounterClockwise(board.snake.snakeDir)
+          val newDirection = board.snake.snakeDir.rotateCounterClockwise
           board.changeSnakeDirection(newDirection)
           true
         case _ =>
@@ -97,6 +80,7 @@ final class Main extends ApplicationAdapter {
 
     override def scrolled(amountX: Float, amountY: Float): Boolean =
       stage.scrolled(amountX, amountY)
+  }
 
   override def create(): Unit = {
     Draw.init()
@@ -107,45 +91,44 @@ final class Main extends ApplicationAdapter {
     Gdx.input.setInputProcessor(new GameInputProcessor())
   }
 
-  override def render(): Unit =
-    gameState match {
-      case GameState.Playing =>
-        // Always render the current board state
-        Draw.render(board)
+  override def render(): Unit = gameState match {
+    case GameState.Playing =>
+      // Always render the current board state
+      Draw.render(board)
 
-        // Update timing (input is now handled by InputProcessor)
-        val currentTime = Gdx.graphics.getDeltaTime
-        lastUpdateTime += currentTime
-        // Update coin spawn timing
-        lastCoinSpawnTime += currentTime
-        // If interval has passed, update the board
-        if (lastUpdateTime >= updateInterval) {
-          board.update()
-          lastUpdateTime = 0f
-          // If coin spawn interval has passed and we haven't reached MAX_COINS, spawn a new coin
-          if (lastCoinSpawnTime >= newCoinInterval && board.coinsNumber < Main.MAX_COINS) {
-            spawnNewCoin()
-            lastCoinSpawnTime = 0f
-          }
+      // Update timing (input is now handled by InputProcessor)
+      val currentTime = Gdx.graphics.getDeltaTime
+      lastUpdateTime += currentTime
+      // Update coin spawn timing
+      lastCoinSpawnTime += currentTime
+      // If interval has passed, update the board
+      if (lastUpdateTime >= updateInterval) {
+        board.update()
+        lastUpdateTime = 0f
+        // If coin spawn interval has passed and we haven't reached MAX_COINS, spawn a new coin
+        if (lastCoinSpawnTime >= newCoinInterval && board.coinsNumber < Main.MAX_COINS) {
+          spawnNewCoin()
+          lastCoinSpawnTime = 0f
         }
+      }
 
-          if (board.hasSnakeSelfCollision) {
-            val snakeLength = board.snake.body.size
-            showScorePopup(snakeLength)
-            gameState = GameState.ShowingScorePopup
-          }
+      if (board.hasSnakeSelfCollision) {
+        val snakeLength = board.snake.body.size
+        showScorePopup(snakeLength)
+        gameState = GameState.ShowingScorePopup
+      }
 
-      case GameState.ShowingScorePopup =>
-        // Continue rendering the board behind the popup
-        Draw.render(board)
-        // Render the UI stage with the popup
-        stage.act()
-        stage.draw()
+    case GameState.ShowingScorePopup =>
+      // Continue rendering the board behind the popup
+      Draw.render(board)
+      // Render the UI stage with the popup
+      stage.act()
+      stage.draw()
 
-      case GameState.Ended =>
-        // Game over - could show final screen or just exit
-        Gdx.app.exit()
-    }
+    case GameState.Ended =>
+      // Game over - could show final screen or just exit
+      Gdx.app.exit()
+  }
 
   private def showScorePopup(snakeLength: Int): Unit = {
     // Create the dialog
@@ -173,8 +156,7 @@ final class Main extends ApplicationAdapter {
   }
 
   private def selectRandomPosition(positions: List[Pos2D]): Option[Pos2D] =
-    if (positions.nonEmpty) Some(positions(Random.nextInt(positions.length)))
-    else None
+    if (positions.nonEmpty) Some(positions(Random.nextInt(positions.length))) else None
 
   private def spawnNewCoin(): Unit =
     selectRandomPosition(board.getEmptyTilePositions) match {
