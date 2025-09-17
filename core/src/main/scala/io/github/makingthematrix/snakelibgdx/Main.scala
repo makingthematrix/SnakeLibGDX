@@ -23,7 +23,7 @@ final class Main extends ApplicationAdapter {
 
   // Game state management
   private enum GameState {
-    case Playing, ShowingScorePopup, Ended
+    case Playing, Ended
   }
 
   private var gameState: GameState = GameState.Playing
@@ -111,19 +111,6 @@ final class Main extends ApplicationAdapter {
           lastCoinSpawnTime = 0f
         }
       }
-
-      if (board.hasSnakeSelfCollision) {
-        val snakeLength = board.snake.body.size
-        showScorePopup(snakeLength)
-        gameState = GameState.ShowingScorePopup
-      }
-
-    case GameState.ShowingScorePopup =>
-      // Continue rendering the board behind the popup
-      Draw.render(board)
-      // Render the UI stage with the popup
-      stage.act()
-      stage.draw()
 
     case GameState.Ended =>
       // Game over - could show final screen or just exit

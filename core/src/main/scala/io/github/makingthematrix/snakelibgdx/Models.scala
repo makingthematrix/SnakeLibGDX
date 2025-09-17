@@ -1,49 +1,31 @@
 package io.github.makingthematrix.snakelibgdx
 
-final class Snake(val body: List[Pos2D], val snakeDir: Dir2D, val hasCoin: Boolean = false):
-  def setHasCoin(value: Boolean): Snake = new Snake(body, snakeDir, value)
-
-  def hasSelfCollision: Boolean =
-    body match {
-      case Nil => false // Empty snake cannot collide with itself
-      case _ :: Nil => false // Single element snake cannot collide with itself
-      case head :: tail => tail.contains(head) // Check if head position is in any tail segment
-    }
-
+final class Snake(val body: List[Pos2D], val snakeDir: Dir2D):
   def changeDirection(newDir: Dir2D): Snake =
-    new Snake(body, newDir, hasCoin) // Always change to new direction - validation handled at Board level
+    new Snake(body, newDir) // Always change to new direction - validation handled at Board level
 
   def crawl(board: Board): Snake =
     body match {
       case Nil =>
-        // Empty body - create new head at (0,0) moved by snakeDir with wrapping
         val newHead = Pos2D(0, 0)
-        new Snake(List(newHead), snakeDir, false) // hasCoin is always false after crawling
+        new Snake(List(newHead), snakeDir)
       case head :: Nil =>
-        // Single element - new head is current head moved by snakeDir with wrapping
-        val newHead = (head + snakeDir).wrap(board.size)
-        // If hasCoin is true, grow the snake by keeping the old head, otherwise just move the head
-        val newBody = if (hasCoin) List(newHead, head) else List(newHead)
-        new Snake(newBody, snakeDir, false) // hasCoin is always false after crawling
+        val newHead = head + snakeDir
+        val newBody = List(newHead)
+        new Snake(newBody, snakeDir)
       case head :: tail =>
-        // Multiple elements - add new head, optionally remove tail based on hasCoin
-        val newHead = (head + snakeDir).wrap(board.size)
-        val newBody = if (hasCoin)
-          // If hasCoin is true, don't remove tail (snake grows)
-          newHead :: body
-        else
-          // Normal crawl - remove last element
-          newHead :: body.init // init removes the last element
-        new Snake(newBody, snakeDir, false) // hasCoin is always false after crawling
+        val newHead = head + snakeDir
+        val newBody = newHead :: body.init // init removes the last element
+        new Snake(newBody, snakeDir)
     }
 
 object Snake:
-  def apply(): Snake = new Snake(Nil, Dir2D.Right, false)
+  def apply(): Snake = new Snake(Nil, Dir2D.Right)
 
   def apply(body: List[Pos2D], snakeDir: Dir2D = Dir2D.Right): Option[Snake] =
     if (isContinuous(body))
       // For now, default direction is Right - this could be enhanced to detect direction from body
-      Some(new Snake(body, snakeDir, false))
+      Some(new Snake(body, snakeDir))
     else
       None
 
@@ -76,8 +58,6 @@ final class Board(val size: Int, private var coins: List[Pos2D] = Nil, private v
     } yield pos).toList
   }
 
-  def hasSnakeSelfCollision: Boolean = _snake.hasSelfCollision
-
   def changeSnakeDirection(newDir: Dir2D): Boolean =
     // Check if the new direction is opposite to the current direction (backwards move)
     if (_snake.snakeDir.opposite(newDir)) false // Cannot change to opposite direction
@@ -93,10 +73,6 @@ final class Board(val size: Int, private var coins: List[Pos2D] = Nil, private v
 
   def update(): Unit = {
     _snake = _snake.crawl(this)
-    if (coins.contains(snake.body.head)) {
-      _snake = _snake.setHasCoin(true)
-      coins = coins.filterNot(_ == snake.body.head)
-    }
   }
 
   private lazy val allPositions =
