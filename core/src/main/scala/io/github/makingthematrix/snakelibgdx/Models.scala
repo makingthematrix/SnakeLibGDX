@@ -4,20 +4,11 @@ final class Snake(val body: List[Pos2D], val snakeDir: Dir2D):
   def changeDirection(newDir: Dir2D): Snake =
     new Snake(body, newDir) // Always change to new direction - validation handled at Board level
 
-  def crawl(board: Board): Snake =
-    body match {
-      case Nil =>
-        val newHead = Pos2D(0, 0)
-        new Snake(List(newHead), snakeDir)
-      case head :: Nil =>
-        val newHead = head + snakeDir
-        val newBody = List(newHead)
-        new Snake(newBody, snakeDir)
-      case head :: tail =>
-        val newHead = head + snakeDir
-        val newBody = newHead :: body.init // init removes the last element
-        new Snake(newBody, snakeDir)
-    }
+  def crawl: Snake = {
+    val newHead = body.head + snakeDir
+    val newBody = newHead :: body.init // init removes the last element
+    new Snake(newBody, snakeDir)
+  }
 
 object Snake:
   def apply(): Snake = new Snake(Nil, Dir2D.Right)
@@ -31,7 +22,7 @@ object Snake:
 
   private def isContinuous(body: List[Pos2D]): Boolean =
     body match {
-      case Nil => true // Empty list is considered continuous
+      case Nil => false // Empty list is not considered continuous
       case _ :: Nil => true // Single element is continuous
       case _ =>
         body.zip(body.tail).forall { case (Pos2D(x1, y1), Pos2D(x2, y2)) =>
@@ -72,7 +63,7 @@ final class Board(val size: Int, private var coins: List[Pos2D] = Nil, private v
   def snakeLength: Int = _snake.body.size
 
   def update(): Unit = {
-    _snake = _snake.crawl(this)
+    _snake = _snake.crawl
   }
 
   private lazy val allPositions =
@@ -89,14 +80,6 @@ final class Board(val size: Int, private var coins: List[Pos2D] = Nil, private v
   def addCoin(position: Pos2D): Unit =
     if (!coins.contains(position) && !_snake.body.contains(position))
       coins = position :: coins
-
-  def updateSnakeDirection(newDir: Dir2D): Boolean =
-    if (!newDir.opposite(_snake.snakeDir)) {
-      _snake = _snake.changeDirection(newDir)
-      true
-    }
-    else
-      false
 }
 
 object Board:

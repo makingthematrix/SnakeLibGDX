@@ -1,10 +1,9 @@
 package io.github.makingthematrix.snakelibgdx
 
-import com.badlogic.gdx.{ApplicationAdapter, Gdx, InputProcessor}
-import com.badlogic.gdx.scenes.scene2d.ui.{Dialog, Label, Skin, TextButton}
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.scenes.scene2d.{InputEvent, Stage}
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.badlogic.gdx.{ApplicationAdapter, Gdx, InputProcessor}
 import io.github.makingthematrix.snakelibgdx.Main.BOARD_SIZE
 
 import scala.util.Random
@@ -21,22 +20,9 @@ final class Main extends ApplicationAdapter {
   private val newCoinInterval: Float = 5f
   private var lastCoinSpawnTime: Float = 0f
 
-  // Game state management
-  private enum GameState {
-    case Playing, Ended
-  }
-
-  private var gameState: GameState = GameState.Playing
-
   // UI components
   private lazy val stage: Stage = new Stage(new ScreenViewport())
   private lazy val skin: Skin = new Skin(Gdx.files.internal("ui/uiskin.json"))
-  private lazy val scoreDialog: Dialog =
-    new Dialog("Game Over", skin, "dialog"){
-      // Set size and padding for better visibility
-      pad(20)
-      setSize(300, 200)
-    }
 
   // Custom InputProcessor to handle key input
   private class GameInputProcessor extends InputProcessor{
@@ -91,49 +77,25 @@ final class Main extends ApplicationAdapter {
     Gdx.input.setInputProcessor(new GameInputProcessor())
   }
 
-  override def render(): Unit = gameState match {
-    case GameState.Playing =>
-      // Always render the current board state
-      Draw.render(board)
+  override def render(): Unit = {
+    // Always render the current board state
+    Draw.render(board)
 
-      // Update timing (input is now handled by InputProcessor)
-      val currentTime = Gdx.graphics.getDeltaTime
-      lastUpdateTime += currentTime
-      // Update coin spawn timing
-      lastCoinSpawnTime += currentTime
-      // If interval has passed, update the board
-      if (lastUpdateTime >= updateInterval) {
-        board.update()
-        lastUpdateTime = 0f
-        // If coin spawn interval has passed and we haven't reached MAX_COINS, spawn a new coin
-        if (lastCoinSpawnTime >= newCoinInterval && board.coinsNumber < Main.MAX_COINS) {
-          spawnNewCoin()
-          lastCoinSpawnTime = 0f
-        }
+    // Update timing (input is now handled by InputProcessor)
+    val currentTime = Gdx.graphics.getDeltaTime
+    lastUpdateTime += currentTime
+    // Update coin spawn timing
+    lastCoinSpawnTime += currentTime
+    // If interval has passed, update the board
+    if (lastUpdateTime >= updateInterval) {
+      board.update()
+      lastUpdateTime = 0f
+      // If coin spawn interval has passed and we haven't reached MAX_COINS, spawn a new coin
+      if (lastCoinSpawnTime >= newCoinInterval && board.coinsNumber < Main.MAX_COINS) {
+        spawnNewCoin()
+        lastCoinSpawnTime = 0f
       }
-
-    case GameState.Ended =>
-      // Game over - could show final screen or just exit
-      Gdx.app.exit()
-  }
-
-  private def showScorePopup(snakeLength: Int): Unit = {
-    // Create the dialog
-    scoreDialog
-    // Add score label
-    val scoreLabel = new Label(s"Score: $snakeLength", skin)
-    scoreDialog.text(scoreLabel)
-    // Add close button
-    val closeButton = new TextButton("Close", skin)
-    closeButton.addListener(new ClickListener() {
-      override def clicked(event: InputEvent, x: Float, y: Float): Unit = {
-        gameState = GameState.Ended
-      }
-    })
-    scoreDialog.button(closeButton)
-
-    // Center the dialog and show it
-    scoreDialog.show(stage)
+    }
   }
 
   override def dispose(): Unit = {
