@@ -1,17 +1,23 @@
 package io.github.makingthematrix.snakelibgdx
 
-final class Snake(val body: List[Pos2D], val snakeDir: Dir2D):
+final class Snake(val body: List[Pos2D], val snakeDir: Dir2D){
   def changeDirection(newDir: Dir2D): Snake =
     new Snake(body, newDir) // Always change to new direction - validation handled at Board level
 
+  // Change #1: Write code to wrap the snake around the board
   def crawl: Snake = {
     val newHead = body.head + snakeDir
     val newBody = newHead :: body.init // init removes the last element
     new Snake(newBody, snakeDir)
   }
 
-object Snake:
-  def apply(): Snake = new Snake(Nil, Dir2D.Right)
+  // Change #2: Write code to detect that the snake ate a coin (Scala icon)
+
+  // Change #3: Detect when the snake collides with itself
+}
+
+object Snake{
+  def apply(): Snake = new Snake(List(Pos2D(3, 4)), Dir2D.Right)
 
   def apply(body: List[Pos2D], snakeDir: Dir2D = Dir2D.Right): Option[Snake] =
     if (isContinuous(body))
@@ -20,6 +26,7 @@ object Snake:
     else
       None
 
+  // Change #4: Suggest improvements to the isContinuous method
   private def isContinuous(body: List[Pos2D]): Boolean =
     body match {
       case Nil => false // Empty list is not considered continuous
@@ -29,8 +36,11 @@ object Snake:
           math.abs(x2 - x1) + math.abs(y2 - y1) == 1
         }
     }
+}
 
-final class Board(val size: Int, private var coins: List[Pos2D] = Nil, private var _snake: Snake = Snake()){
+final class Board(val size: Int,
+                  private var coins: List[Pos2D] = Nil,
+                  private var _snake: Snake = Snake()) {
   def coinsPositions: List[Pos2D] = coins
 
   def snake: Snake = _snake
@@ -57,11 +67,6 @@ final class Board(val size: Int, private var coins: List[Pos2D] = Nil, private v
       true // Valid direction change succeeded
     }
 
-  def updateSnake(newSnake: Snake): Unit =
-    _snake = newSnake
-
-  def snakeLength: Int = _snake.body.size
-
   def update(): Unit = {
     _snake = _snake.crawl
   }
@@ -82,8 +87,12 @@ final class Board(val size: Int, private var coins: List[Pos2D] = Nil, private v
       coins = position :: coins
 }
 
-object Board:
+object Board{
   def apply(size: Int): Board = new Board(size)
+
   def apply(size: Int, coins: List[Pos2D]): Board = new Board(size, coins)
+
   def apply(size: Int, coins: List[Pos2D], snake: Snake): Board = new Board(size, coins, snake)
+
   def apply(size: Int, snake: Snake): Board = new Board(size, Nil, snake)
+}
