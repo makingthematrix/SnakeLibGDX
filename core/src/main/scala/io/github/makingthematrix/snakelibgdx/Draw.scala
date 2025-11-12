@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 
 import java.nio.file.Paths
 
-object Draw:
+object Draw {
   private val SQUARE_SIZE = 80f // Size of each square in pixels
   private val TILE_WIDTH = SQUARE_SIZE // Width of an isometric tile
   private val TILE_HEIGHT = SQUARE_SIZE / 2 // Height of isometric tile (half of width for 2:1 ratio)
@@ -152,3 +152,4 @@ object Draw:
     sprite.setOrigin(SQUARE_SIZE / 2f, SQUARE_SIZE / 2f)
     sprite.draw(batch)
   }
+}

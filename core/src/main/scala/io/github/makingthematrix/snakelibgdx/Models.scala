@@ -1,6 +1,6 @@
 package io.github.makingthematrix.snakelibgdx
 
-final class Snake(val body: List[Pos2D], val snakeDir: Dir2D, val hasCoin: Boolean = false):
+final class Snake(val body: List[Pos2D], val snakeDir: Dir2D, val hasCoin: Boolean = false){
   def setHasCoin(value: Boolean): Snake = new Snake(body, snakeDir, value)
 
   def hasSelfCollision: Boolean =
@@ -23,7 +23,8 @@ final class Snake(val body: List[Pos2D], val snakeDir: Dir2D, val hasCoin: Boole
         // Single element - new head is current head moved by snakeDir with wrapping
         val newHead = (head + snakeDir).wrap(board.size)
         // If hasCoin is true, grow the snake by keeping the old head, otherwise just move the head
-        val newBody = if (hasCoin) List(newHead, head) else List(newHead)
+        val newBody = if (hasCoin) List(newHead, head)
+        else List(newHead)
         new Snake(newBody, snakeDir, false) // hasCoin is always false after crawling
       case head :: tail =>
         // Multiple elements - add new head, optionally remove tail based on hasCoin
@@ -36,8 +37,9 @@ final class Snake(val body: List[Pos2D], val snakeDir: Dir2D, val hasCoin: Boole
           newHead :: body.init // init removes the last element
         new Snake(newBody, snakeDir, false) // hasCoin is always false after crawling
     }
+}
 
-object Snake:
+object Snake {
   def apply(): Snake = new Snake(Nil, Dir2D.Right, false)
 
   def apply(body: List[Pos2D], snakeDir: Dir2D = Dir2D.Right): Option[Snake] =
@@ -56,8 +58,9 @@ object Snake:
           math.abs(x2 - x1) + math.abs(y2 - y1) == 1
         }
     }
+}
 
-final class Board(val size: Int, private var coins: List[Pos2D] = Nil, private var _snake: Snake = Snake()){
+final class Board(val size: Int, private var coins: List[Pos2D] = Nil, private var _snake: Snake = Snake()) {
   def coinsPositions: List[Pos2D] = coins
 
   def snake: Snake = _snake
