@@ -45,3 +45,5 @@
 *.lock
 *.jar
 .gradle
+*.lock
+*.bin
