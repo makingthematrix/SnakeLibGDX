@@ -30,10 +30,7 @@
 .cache-tests
 *.odp
 *.odt
-*.gif
-*.png
-*.jpg
-*.svg
+
 *.bloop*
 *.metals*
 *.bsp
@@ -45,5 +42,5 @@
 *.lock
 *.jar
 .gradle
-*.lock
-*.bin
+*lock
+*bin
