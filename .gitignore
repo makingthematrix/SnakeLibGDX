@@ -38,4 +38,6 @@
 *.bin
 *.lock
 *.jar
-.gradle/
+build*
+*lwjgl3/*
+*core/build*

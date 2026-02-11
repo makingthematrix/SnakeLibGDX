@@ -82,8 +82,10 @@ final class Main extends ApplicationAdapter {
       stage.scrolled(amountX, amountY)
   }
 
+  private lazy val drawBoardIsometric = new DrawBoardIsometric(BOARD_SIZE)
+
   override def create(): Unit = {
-    Draw.init()
+    drawBoardIsometric.init()
     // Initialize UI components
     stage
     skin
@@ -94,7 +96,7 @@ final class Main extends ApplicationAdapter {
   override def render(): Unit = gameState match {
     case GameState.Playing =>
       // Always render the current board state
-      Draw.render(board)
+      drawBoardIsometric.render(board)
 
       // Update timing (input is now handled by InputProcessor)
       val currentTime = Gdx.graphics.getDeltaTime
@@ -120,7 +122,7 @@ final class Main extends ApplicationAdapter {
 
     case GameState.ShowingScorePopup =>
       // Continue rendering the board behind the popup
-      Draw.render(board)
+      drawBoardIsometric.render(board)
       // Render the UI stage with the popup
       stage.act()
       stage.draw()
@@ -150,7 +152,7 @@ final class Main extends ApplicationAdapter {
   }
 
   override def dispose(): Unit = {
-    Draw.dispose()
+    drawBoardIsometric.dispose()
     if (stage != null) stage.dispose()
     if (skin != null) skin.dispose()
   }
@@ -166,6 +168,6 @@ final class Main extends ApplicationAdapter {
 }
 
 object Main {
-  val BOARD_SIZE: Int = 8
+  val BOARD_SIZE: Int = 10
   val MAX_COINS: Int = 10
 }
